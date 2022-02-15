@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <!-- IE配置:IE浏览器将使用最高级别渲染页面 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 开启移动端的理想视口,有兴趣再了解 -->
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!-- <%= BASE_URL %>表示"public"文件夹所在的绝对路径 -->
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <!-- 
+      <%= htmlWebpackPlugin.options.title %>属于webpack的配置,
+      其表示使用"package.json"文件中的"name"作为网页的标题
+    -->
+    <title><%= htmlWebpackPlugin.options.title %></title>
+  </head>
+  <body>
+    <!-- 当浏览器不支持JavaScript时,显示"noscript"标签中的内容 -->
+    <noscript>
+      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+    <!-- 挂载容器 -->
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+  </body>
+</html>

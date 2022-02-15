@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue.js组件</title>
+    <script type="text/javascript" src="vue.js"></script>
+</head>
+<body>
+    <!--组件三部曲:1.定义组件;   2.注册组件;   3.使用组件-->
+    <div id="root">
+        <!--【注意事项】:
+                1.在Vue的开发者工具会注意到组件的标签名为首字母大写,这是Vue自动调整的结果;
+                2.Vue官方推荐的组件名称:
+                    (I)如果只有一个单词,使用小驼峰命名或大驼峰命名; e.g:"cartoon"或"Cartoon"
+                    (II)如果有多个单词,使用连字符命名法或大驼峰命名法; e.g:"my-cartoon"或"MyCartoon"(需要脚手架才能解析)
+                3.Vue组件使用方法:
+                    (I)<app>***</app>
+                    (II)<app />(当为非脚手架环境下时,多个标签会出现BUG)
+        -->
+        <app></app>
+    </div>
+</body>
+<script>
+    Vue.config.productionTip = false;
+    // 全局注册组件
+    Vue.component('cartoon', {/**/});
+
+    // "Vue.extend"本质上调用了"VueComponent(options)"构造函数,返回"VueComponent(options)"实例对象
+    // 这里存在一个关系:"VueComponent.prototype.__proto__ == Vue.prototype",也就是"VueComponent"的父类为"Vue"
+    // 即:"VueComponent"可以访问"Vue"中的属性和方法
+
+    // 多组件文件中的组件样式需要额外设置或者引入,这是相较于单文件组件的弊端
+    
+    // 定义组件
+    const duola = Vue.extend({
+        // 指定组件Vue在开发者工具中的名字,一般常见于第三方组件库
+        name: "duola",
+        template:`
+            <div>
+                <div>大家好,我是哆啦{{character}}梦!</div>
+                <button v-on:click="changeCharacter">点击我召唤下一个哆啦</button>
+            </div>
+        `,
+        // 组件只能写成函数式
+        data:function() {
+            return {
+                character: 'A'
+            };
+        },
+        methods: {
+            changeCharacter:function() {
+                this.character = String.fromCharCode(this.character.charCodeAt() + 1);
+            }
+        }
+    });
+
+    const daxiong = Vue.extend({
+        name: "daxiong",
+        template:`
+            <div>大家好,我是{{name}}!</div>
+        `,
+        data:function() {
+            return {
+                name: "野比大雄"       
+            };
+        }
+    });
+
+    // "app"组件:通常开发时,"vm"管理"app"组件,而"app"组件管理所有其他组件
+    const app = Vue.extend({
+        name: "app",
+        template: `
+            <div>
+                <duola></duola>
+                <daxiong></daxiong>
+            </div>
+        `,
+        // 组件的嵌套
+        components: {
+            duola: duola,
+            daxiong: daxiong
+        }
+    })
+
+    // Vue实例
+    const vm = new Vue({
+        el: "#root",
+        data: {
+
+        },
+        methods: {
+            
+        },
+        // 局部注册组件
+        components: {
+            app: app
+        }
+    });
+</script>
+</html>

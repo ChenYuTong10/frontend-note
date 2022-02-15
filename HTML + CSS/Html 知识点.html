@@ -1,0 +1,357 @@
+<!--注释(简单明了,网页到时候要维护的哦)：在Notepad++中使用"Ctrl + Q"可以一键注释-->
+<!doctype html>
+<!--HTML语法规范:（不遵守也可以，因为浏览器会最大限度的理解你所写的内容，但是有时会理解错误，也就是没有问题还好，出了问题就很麻烦）
+	1.HTML中不区分大小写，一般来说，除非有特殊情况，我们都使用小写；
+	2.HTML中的注释不能嵌套；
+	3.HTML中的标签力求完整，不是成对出现，就是自结束标签（自结束标签后的“/”可加可不加，都是正确的写法，但是推荐加上“/”）；
+	4.HTML中标签可以进行嵌套，但是不能交叉嵌套（错误：<p>今天<font>是个好日子!</p></font>）；
+	5.HTML中属性力求有值，而且值要加上双引号（单引号也行）.
+-->
+<html>
+	<head>
+		<title>HTML知识点</title>
+		<!--meta是一个设置网页的元数据，是一个自结束标签；
+		【作用】：
+		1.设置编码或解码时所用的语言；<meta charset="编码/解码语言" />
+		2.设置网页的关键字（关键字是搜索引擎找到网页的依据之一）；<meta name="keywords" content="关键字" />
+		3.设置网页的描述（描述也是搜索引擎找到网页的依据之一）；<meta name="description" content="对网页的描述 "/>
+		4.设置网页的请求重定向（请求重定向就是像那种多少秒后跳转网页）；<meta http-equiv="refresh" content="跳转的秒数;url=跳转的网页" />
+		-->
+		<meta charset="utf-8" />
+		<meta name="keywords" content="标准模板" />
+		<meta name="description" content="这是我学到的东西... "/>
+		<meta http-equiv="refresh" content="100000;url=http://www.baidu.com" />
+		<style type="text/css">
+		table
+		{
+		width:100px;
+		border-collapse:collapse;
+		}
+		tr:nth-child(even)
+		{
+		background-color:#bfa;
+		}
+		tr:hover
+		{
+		background-color:yellow;
+		}
+		td
+		{
+		border:1px solid black;
+		}
+		</style>
+	</head>
+	<body>
+		<!--一共有六级标题，从h1到h6，h1最“重要“的标题,h6最”不重要“的标题；
+		h1意义是搜索引擎在寻找网页时，是通过h1寻找的；
+		因此：h1在一个网页中有且仅有一个。
+		【附】：在Notepad++中,Ctrl+d为复制.
+		-->
+		<h1>我是一级标题哦...</h1>
+		<h2>我是二级标题哦...</h2>
+		<h3>我是三级标题哦...</h3>
+		<!--往下的三个标签一般不用哦...-->
+		<h4>我是四级标题哦...</h4>
+		<h5>我是五级标题哦...</h5>
+		<h6>我是六级标题哦...</h6>
+		
+		<!--p标签是另起一段的标志，内容可以写在里面，当然也可以直接不用P标签写在外面；
+		无论空格有多少，或者换多少行，浏览器都只会当作至多一个空格；
+		br标签是换行标签,是一个自结束标签;
+		hr标签是水平线标签,是一个自结束标签.
+		-->
+		<p>
+		我是第一行呀...<br />
+		我是第二行啊...<br />
+		我是第三行啊...<br />
+		我是第四行啊...<br />
+		</p>
+		
+		<hr />
+
+		<!--像“小于号，大于号”等特殊符号是不能直接输入的，需要用到实体，即：转义字符.
+		格式：&(字符的名字)/#(10进制的"Unicode"编码);
+		比如：小于 &lt; 大于 &gt; 空格 &nbsp; 注册商标 &copy;
+		-->
+		
+		<!--img标签：引入外部图片,是一个自结束标签;
+		src：设置外部图形的路径；
+		【附】:
+		1.如果所需图片与该文本处于同一文件夹，直接向下面那样写就行了；
+		2.如果所需图片在该文本的下级目录中，则需要添加“（文件夹名）/”，当有多个文件夹时，一个一个写就行了；<img src="文件夹1/文件夹2/素材.jpg"/>
+		3.如果所需图片在该文本的上级目录中，则需要添加“../”,一个返回一层上级目录。<img src="../文件夹1.。/文件夹2/素材.jpg"/>
+		alt:当图片不能正常显示时，显示对图片的描述；是搜索引擎寻找图片时的依据；
+		width:修改图片的宽度，以px（像素）为单位；
+		height:修改图片的高度，以px（像素）为单位；
+		【注意】：
+		1.如果只改变width和height中的一个，另外一个变量会成比例变化。
+		2.如果像查看页面中某张图片的width和height，可以通过（i）看页面源代码；（ii）通过截图工具看大小：宽*高；（iii）开发者工具.
+		-->
+		<!--【补充】:图片的格式有JPEG（JPG），GIF和PNG；
+			JPEG：1.颜色较丰富；2.图片可以压缩；3.图片背景不支持透明。
+			GIF：1.支持动态图；2.图片背景可以是简单的透明（比如：像矩形这种横平竖直的图形的背景可以是透明的，而像圆形这种曲线的不行）。
+			PNG（在开发中较常用）：1.颜色较丰富；2.图片背景可以是复杂的透明。
+			【图片的使用原则】：当某张图片拥有三种格式时：1.肉眼效果差不多的，用内存小的；2.肉眼效果不一致的，用效果好的。（当然如果效果好的内存实在太大，也需要综合考虑）
+		-->
+		<!--
+			【注意事项】：在IE6浏览器中，若图片的格式是"PNG-24"且拥有透明效果，那么会导致其透明效果无法正常显示;
+			【解决方法】：
+				1.使用"PS"软件将图片的格式转化为"PNG-8";（不推荐：以"PNG-8"为格式的图片清晰度会下降）
+				2.在"body"标签的最后一行引入一个"JavaScript"外部文件，同时编写一段"JS"代码.
+		-->
+		<img id="Surprise" src="素材图片.jpg" alt="这是我的样子..." width="100px"/> <br />
+
+		<!--iframe标签:引入一个外部网站;
+		src:设置外部网页的路径（【附】同img标签）;
+		width,height:同img标签;
+		name:为内联框架命名.
+		尽管存在内联框架，但是在开发过程中一般不会使用，因为这个框架的内容是不会被浏览器检索的，当然除了某些特殊情况，比如：企业的内网，不需要将其放入互联网.
+		-->
+		<iframe src="素材网页.html" name="内联框架"></iframe> <br />
+		
+		<!--"frameset"标签：创建一个框架集，引入多个外部网站;
+				【排列形式】：（必须指定一个排列形式，而且需要指定每一个框架所占的大小）
+					1.rows：指定框架集中的所有框架以行排列;
+					2.cols：指定框架集中的所有框架以列排列;
+				【注意事项】：
+					1.在HTML5中，推荐使用框架集，不使用内联框架;
+					2.若一个页面需要使用框架集，那么这个页面不能使用"body"标签，即：这个页面只能用来引入外部网站;
+					3."frameset"标签中可以嵌套"frameset"，可以用于页面布局（不推荐）.
+				【格式】：
+					<frameset cols="30%,*,30%">（"*"表示将剩下的大小赋予第二个网站）
+						<frame src="CSS知识点.html" />
+						<frame src="盒子模型.html" />
+						<frame src="网页ing.html" />
+					</frameset>
+		-->
+		
+		<!--
+			虽然可以使用"iframe"标签和"frameset"标签引入外部网站，但是外部网站中的内容不会被搜索引擎检索，不利于网页的收录;
+			除此之外，使用"frameset"标签意味着该网页不能有自己的内容，与此同时，每一个引入的网站都需要单独加载，浏览器需要发送请求，用户的体验也就不佳.
+		-->
+		
+		<!--a标签:创建一个超链接;
+		href:指定超链接跳转的目标路径，如果暂时不知道跳转的目标路径可以先写入“#”；<a href="#">（文字内容）</a>
+		target:选择在哪里打开目标路径;
+		【附】:
+		1._self:表示在当前页面打开目标路径，这是浏览器的默认值;
+		2._blank:表示在新建标签页面中打开目标路径;
+		3.内部框架的name:表示在内部框架中打开目标路径.
+		-->
+		<a href="http://www.baidu.com" target="内联框架">Click here!</a> <br />
+		
+		<!--关于跳转位置：
+		1.页面顶端：“#”的另一个作用就是跳转到页面的顶端；<a href="#">（文字内容）</a>
+		2.页面的其他位置：<p id="目标id"> <a href="#目标id"></a>
+			引入id属性，这个id属性是所有标签都拥有的，使用时在标签中的href中写入#（id属性值）；
+			【注意事项】：
+			a.在一个页面中，每一个id的都是独一无二的，不能重复；
+			b.id只能以字母开头，不能以数字,中文开头.
+		3.计算机的其他位置：
+			a.电子邮件:打开计算机中默认的邮件客户端并填入收件人地址，通常在页面中的“联系我们”超链接使用；<a href="mailto:（邮件收件人）">联系我们</a>
+			【附】：如果没有安装邮件客户端，不同浏览器可能会有不同的处理，比如：打开网页版的邮件...
+		-->
+		<a href="#Surprise">Click here to somewhere...</a> <br />
+		<a href="mailto:894104315@qq.com">联系我们</a> <br />
+		
+		<!--em和strong标签:强调其中的内容;
+		em标签:主要表示语气上的强调，在浏览器中默认使用斜体显示;
+		strong标签:主要表示在内容上的强调，在浏览器中默认使用粗体显示.
+		-->
+		<p>好好<em>学习</em>，争取<strong>保研</strong></p> <br />
+		
+		<!--i和b标签：以斜体和粗体显示其中的内容，属于非语义化标签;
+		适用于不需要强调的内容，即：单纯的以斜体或粗体显示的内容.
+		-->
+		
+		<!--small标签：相较于父元素的内容，small标签中的内容会变小；可以用于比如：合同的一些条款，网页底部的版权声明等-->
+		<p>红烧牛肉面<small>图片仅供参考，具体以实例为准</small></p>
+		
+		<!--cite标签：表示引用的内容；可以用于所有加有书名号的标签来表示参考的内容-->
+		<p><cite>《十万个为什么》</cite>是一本科普类的书籍</p>
+		
+		<!--q标签：短引用，属于内联元素，对其内容添加一对引号，实际上是通过CSS的:before和:after加入的，并不常用-->
+		<!--blockquote标签：长引用，属于块元素（一般不在p标签中使用）-->
+		<p>子曰：<q>学而时习之，不亦说乎!</q></p>
+		<div>
+			子曰：<blockquote>三军可夺帅也，匹夫不可夺志也!</blockquote>
+		</div>
+		
+		<!--sup和sub标签：分别设置上标和下标-->
+		<p>H<sub>2</sub> + O<sub>2</sub> = H<sub>2</sub>O</p>
+		<p>O<sup>16</sup><sub>8</sub></p>
+		
+		<!--del标签:表示删除的内容，对其内容添加删除线-->
+		<!--ins标签：表示插入的内容，对其内容添加下划线-->
+		<span>大甩卖：<del>原价998</del>，现价99.8</span> <br />
+		<span>1 + 1 = <ins>2</ins></span> <br />
+		
+		<!--pre标签：预格式标签，可以保留代码的缩进等格式;
+			code标签：表示代码的标签，但是不会保留代码的缩进等格式;
+			因此，如果想要在网页上显示一段代码，通常需要结合pre标签和code标签. <pre><code></code></pre>
+			【附】：Shift + Tab 快捷键是往回缩进.
+		-->
+		<pre>
+			<code>
+				#include <iostream>
+				using namespace std;
+				int main() { return 0; }
+			</code>
+		</pre>
+		
+		<!--HTML中有三种列表：1.无序列表; 2有序列表; 3.定义列表.
+		1.无序列表：使用ul标签创建无序列表，使用li标签创建列表中的列表项，其中ul和li元素属于块元素;
+			项目符号：a.disc 实心原点（浏览器默认值）; b.square 实心方块; c.circle 空心圆圈.
+				可以通过type属性值修改项目符号，但是在不同的浏览器，项目符号的大小会不同，因此我们不能用上面的项目符号;
+				通过CSS设置"ul{list-style:none;}"可以去掉项目符号.
+		2.有序列表：与无序列表相似，使用ol标签创建有序列表，使用li标签创建列表中的列表项，其中ol元素属于块元素;
+			项目符号：a.1 阿拉伯数字（浏览器默认值）;b.a/A 小写或大写字母;c.i/I 小写或大写罗马数字.
+		3.定义列表：使用dl标签创建定义列表，使用子标签dt和dd创建列表中的列表项，其中dl，dt和dd元素都属于块元素;
+			dt标签：写入定义的对象; dd标签：写入定义对象的定义内容.
+		【注意事项】：列表之间是可以互相嵌套的，可以在无序列表中嵌入有序列表，其他组合方式亦可.
+		-->	
+		<ul>
+			<li>哆啦X梦</li>
+			<li>哆啦Y梦</li>
+			<li>哆啦Z梦</li>
+			<li>
+				哆啦家族
+				<ol>
+					<li>哆啦美</li>
+					<li>大雄</li>
+					<li>小美</li>
+				</ol>
+			</li>
+		</ul>
+		<dl>
+			<dt>我</dt>
+			<dd>世界上最帅的成年雄性哺乳动物</dd>
+			<dd>坠吊的那个Boy</dd>
+		</dl>
+		
+		<!--表格：通过"table"标签创建表格，使用"tr"标签创建一行表格，使用"td"标签创建一个单元格，使用"th"标签（特殊的"td"标签）创建一个标题，其中"table"元素为块元素;
+				【合并单元格】：1.横向合并——"colspan";   2.纵向合并——"rowspan";
+				【特殊情况】：若表格长度过大时，例如：银行账户近几年的流水，则需要将表格分成表头（thead），表格主体（tbody）和表格底部（tfoot）来创建;
+						【优点】：
+							1.可以分别为表头，表格主体和表格底部设置不同的样式;
+							2.若该表格需要打印且会分成多页打印，那么每页都会拥有表头和表格底部，否则在打印除了第一页以外的页数时，只会呈现一堆数据;
+							3.在多次来回修改不同部分的属性值时，可以将需要修改的部分放在一起，然而不会影响结构（例如下面例子把"tfoot"放在了"thead"后）.
+						【注意事项】：
+							1.表格可以嵌套，因此早期表格用于页面布局，虽然这种布局方式操作简单，但是维护难度很大，正所谓"牵一发而动全身"，所以不要使用表格对页面进行布局;
+							2.即使不使用"thead"，"tbody"或"tfoot"，浏览器也会默认添加;
+							其导致如果想为"tr"设置样式且使用子元素选择器，即："table > tr"，"tr"样式设置会失败，因为"table"和"tr"不再是父子元素的关系.
+		-->
+		<table>
+			<thead>
+				<tr>
+					<td>A</td>
+					<td>B</td>
+					<td colspan="2">C</td>
+				</tr>
+			</thead>
+			<tfoot>
+				<tr>
+					<td>P</td>
+					<td>Q</td>
+					<td>R</td>
+					<td>S</td>
+				</tr>
+			</tbody>
+			<tbody>
+				<tr>
+					<td>D</td>
+					<td>E</td>
+					<td>F</td>
+					<td>G</td>
+				</tr>
+				<tr>
+					<td>H</td>
+					<td>I</td>
+					<td>J</td>
+					<td>K</td>
+				</tr>
+				<tr>
+					<td>L</td>
+					<td>M</td>
+					<td>N</td>
+					<td>O</td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<!--"value"属性：在输入文本框中，其作用是指定默认值；在提交按钮中，其作用是指定提交按钮上的文字；
+			在需要用户选择而不是直接填写的表单项中，例如：在单选按钮中，必须指定"value"的属性值才能将选择的信息提交给服务器-->
+			
+		<!--"checked"属性：当其属性值为"checked"时，可以将表单项（除了下拉列表）中的某一个值变成默认选择值-->
+		<!--"selected"属性：当其属性值为"selected"时，可以将下拉列表中的某一个值变成默认选择值-->
+		
+		<!--表单：表单的作用是将用户填入的信息提交给服务器，使用"form"标签创建一个表单-->
+		<!--"form"标签中必须指定"action"属性，其属性值为服务器的地址-->
+		<form action="HTML知识点.html">
+			<fieldset>
+				<legend>登录信息</legend>
+				<!--使用"input"标签创建文本框，"input"标签为内联元素-->
+				<!--当"input"中"type"的属性值为"text"时，该文本框可以以明文的形式输入文本;
+					使用"name"属性指定表单项中的数据属性，以此提交到服务器（"name"的属性值由后端的需求指定）-->
+				<!--用户填写的信息将在"url"地址后以查询字符串（格式："name"属性名 = 用户填写的信息）的形式提交给服务器;
+					【格式】：（url地址）？（查询字符串1）&（查询字符串2）...-->
+				<label for="Name">用户名:</label>
+				<input type="text" id="Name" name="Username" value="默认值"/> <br />
+				<!--当"input"中"type"的属性值为"password"时，该文本框可以以暗文形式输入文本-->
+				<label>密码:</label>
+				<input type="password" name="Password"/> <br />
+			</fieldset>
+			<fieldset>
+				<legend>个人信息</legend>
+				<!--当"input"中"type"的属性值为"radio"时，该文本框是单选按钮;
+					通过"name"的属性值对单选按钮进行分类，"name"属性值相同的是一组单选按钮-->
+				<span>人格:</span>
+				<input type="radio" name="Humanity" value="Angel"/> <span>天使</span>
+				<input type="radio" name="Humanity" value="Demon"/> <span>恶魔</span> <br />
+				<!--当"input"中"type"的属性值为"checkbox"时，该文本框是多选按钮-->
+				<span>收入:</span>
+				<input type="checkbox" name="Wealth" value="2k~4k"/> <span>2000~4000</span>
+				<input type="checkbox" name="Wealth" value="4k~6k"/> <span>4000~6000</span>
+				<input type="checkbox" name="Wealth" value="6k~8k" checked="checked"/> <span>6000~8000</span>
+				<input type="checkbox" name="Wealth" value="8k~10k"/> <span>8000~10000</span>
+				<input type="checkbox" name="Wealth" value="10k+"/> <span>10000+</span> <br />
+				<!--当"input"中"type"的属性值为"select"时，该文本框是下拉列表;通过"option"标签创建一个列表项;
+					下拉列表中的"name"属性需要赋予"select"标签，而"value"属性需要赋予"option"标签;
+					通过"multiple"属性并且赋予"multiple"的属性值，可以多选下拉列表的中属性值（<select name="Address" multiple="multiple">）;
+					通过"optgroup"标签可以为下拉列表中的属性值分类，同时通过"label"属性赋予组名-->
+				<span>家庭住址:</span>
+				<select name="Address">
+					<optgroup label="有潜力的客户">
+						<option value="One">一线城市</option>
+						<option value="Two or three" selected="selected">二，三线城市</option>
+					</optgroup>
+					<optgroup label="抱有希望的客户">
+						<option value="Countryside">乡镇区域</option>
+						<option value="Remote">偏远地区</option>
+					</optgroup>
+				</select> <br />
+				<!--使用"textarea"标签创建一个多行文本域-->
+				<span>自我介绍:</span>
+				<textarea value="Information"></textarea> <br />	
+			</fieldset>
+			<!--当"input"中"type"的属性值为"submit"时，该文本框是将表单中的信息提交给服务器的提交按钮-->
+			<input type="submit" value="注册"/>
+			<!--当"input"中"type"的属性值为"reset"时，该文本框是重置按钮-->
+			<input type="reset" />
+			<!--当"input"中"type"的属性值为"button"时，该文本框是没有任何效果的按钮，可以结合JavaScript赋予无限的功能-->
+			<input type="button" /> <br />
+			<!--可以直接使用"button"标签，同时结合对应的"type"属性值，创造对应的按钮（较上方的创建方法，这种方法更灵活，更推荐）-->
+			<button type="submit">注册</button>
+			<button type="reset">重置</button>
+			<button type="button"></button>
+			<!--在HTML中，"label"标签专门选中在表单中的文字（即：上方表单中的所有"span"标签都可以替换成"label"标签）;
+				【附加功能】：在"label"标签中为"for"属性指定一个表单项的"id"值，可以在鼠标单击文字时，输入框移入光标（多用于选择表单项）-->
+			<!--使用"fieldset"标签可以为表单项分组，在标签中使用"legend"标签可以赋予其组名-->
+		</form>
+		
+		<script type="text/javascript" src="js/DD_belatedPNG_0.0.8a-min.js"></script>
+		<script type="text/javascript">
+			DD_belatedPNG.fix("（需要修复的图片所在选择器1）,（选择器2）,.../（*）");
+		</script>
+	</body>
+</html>

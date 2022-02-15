@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ES5-ES11</title>
+</head>
+<body>
+    <!-- ES11:动态引入模块 -->
+    <button id="button1">按钮1</button>
+</body>
+<script type="text/javascript">
+    // "ECMA"是欧洲计算机制造商协会,主要在于评估,开发和认可计算机标准
+    // ES全称为"EcmaScript",是"ECMA"通过的脚本语言规范之一,而JavaScript是对规范的实现
+
+    // ES6新特性
+
+    // ES6添加了块级作用域
+    // "let"声明变量
+    {
+        // console.log(a1);  // 不能作用域提升
+        let a1 = 1;
+        console.log(a1);
+    }
+    // console.log(a1);  // 无法访问
+
+    // "const"声明常量,一般潜规则为大写,其地址不能修改
+    const PERSON = ["zhangsan", "lisi"];
+    PERSON.push("wangwu");  // 合法操作
+
+    // 解构赋值
+    const OBJECT = {
+        "name": "zhangsan",
+        "age": 18,
+        "fun": function (name) {
+            console.log(name);
+        }
+    }
+    let { name, age, fun } = OBJECT;
+    console.log(name, age, fun);
+    // let { fun } = OBJECT;  // 也可以只拿出想要的
+    // 函数与解构赋值
+    function Connection({ host, port, username, password }) {
+        console.log(host, port, username, password);
+    }
+    Connection({
+        host: "127.0.0.1",
+        port: 443,
+        username: "root",
+        password: "123456"
+    });
+
+    // 模板字符串
+    // 1.可以换行
+    let a2 = `
+        <div>
+            <div>zhangsan</div>
+            <div>lisi</div>
+            <div>wangwu</div>
+        </div>
+    `;
+    // 2.拼接字符串
+    let a3 = "zhangsan";
+    let a4 = `${a3}和lis是一对好朋友!`;
+    console.log(a4);
+
+    // 对象的简写形式
+    let color = "red";
+    let boom = function () {
+        console.log("boom");
+    }
+    let object1 = {
+        color, boom,
+        fly() {
+            console.log("fly");
+        }
+    }
+    console.log(object1);
+
+    // 箭头函数
+    function AddNumber(num1, num2) {
+        console.log("正常函数的\"this\"", this);
+        return num1 + num2;
+    }
+    let SubNumber = (num1, num2) => {
+        console.log("箭头函数的\"this\"", this);
+        return num1 - num2;
+    };
+    AddNumber(2, 1);
+    SubNumber(2, 1);
+    // 箭头函数的"this"是静态的,无论调用者是谁,"this"都指向声明时所在的作用域
+    // 同时使用箭头函数不能作为构造函数和使用"arguments"变量
+
+    // 箭头函数的简写形式
+    // 1.当形参有且仅有一个时,可以省略"()";
+    let SelfAdd = num => {
+        console.log(num + 1);
+    };
+    SelfAdd(1);
+    // 2.当函数体仅有一条语句时,可以省略"{}"和必须省略"return"
+    let SelfSub = num => console.log(num - 1);
+    SelfSub(1);
+    // 箭头函数适用于与"this"无关的场景,比如:定时器等
+    const NUMBER_LIST = [1, 0, 7, 4, 99];
+    console.log(NUMBER_LIST.filter(value => value % 2 == 0));  // 筛选偶数
+
+    // 函数允许使用默认值
+    function MultiNumber(num1, num2 = 0) {
+        console.log(num1 * num2);
+    }
+    MultiNumber(1, 2);
+    MultiNumber(1);
+
+    // "reset"参数,也称可变参数
+    function AllAdd(...args) {
+        let result = 0;
+        for (let i = 0; i < args.length; i = i + 1) {
+            result = result + args[i];
+        }
+        console.log(result);
+    }
+    AllAdd(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+    // 扩展运算符:将数组转化为以逗号分隔的字符串
+    const animals = ["dog", "cat", "penguin"];
+    console.log(...animals);  // "dog", "cat", "penguin"
+
+    // 扩展运算符的应用
+    // 1.拼接两个数组(之前可以使用"contcat()")
+    let a5 = ["1", "2", "3"];
+    let a6 = ["4", "5", "6"];
+    let a7 = [...a5, ...a6];
+    console.log(a7);
+
+    // 2.拷贝数组
+    let a8 = ["zhangsan", "lisi", "wangwu"];
+    let a9 = [...a8];  // 注意如果其中存在引用类型的变量的话是浅拷贝
+    console.log(a9);
+
+    // 3.将伪数组转化为真数组,比如将获取的DOM元素数组变成真数组
+
+    // 新增基本类型"Symbol",表示独一无二的
+    let a10 = Symbol("a10");
+    console.log(a10, typeof a10);
+    let a11 = Symbol("a10");
+    console.log(a10 === a11);
+
+    let a12 = Symbol.for("a11");
+    console.log(a12, typeof a12);
+    let a13 = Symbol.for("a11");
+    console.log(a12 === a13);
+
+    // "Symbol"的应用场景:"Symbol"类型的数据或者函数是无法遍历和对外展示的,因此涉及到属性都可以进行隐藏
+    let games = {
+        "name": "CSGO",
+        [Symbol("waigua")]: function () {
+            console.log("使用外挂!");
+        }
+    }
+    console.log(games.name, games[Symbol("waigua")]);
+
+    // 迭代器
+    // 在"Array","Arguments","Set","Map","String"等包装类都存在迭代器函数
+    var a14 = new Array("zhangsan", "lisi", "wangwu");
+    let iterator1 = a14[Symbol.iterator]();
+    console.log(iterator1);
+
+    // 调用迭代器的"next"方法
+    // 在自定义遍历方法的时候比较有用
+    console.log(iterator1.next());
+    console.log(iterator1.next());
+    console.log(iterator1.next());
+    console.log(iterator1.next());  // "done=true"表示遍历完毕
+
+    // 存在迭代器的类型可以使用"for...of"进行遍历,是否遍历完毕是通过上面说的"done"确定
+    for (let index in a14) {
+        console.log(index);
+    }
+    for (let value of a14) {
+        console.log(value);
+    }
+
+    // 生成器:特殊的函数,主要用在异步(如果不是很懂,可以再看看B站的ES5-ES11课程的p22,23)
+    function* generator() {
+        console.log("block 1");
+        yield "block1 is end!";  // yield将函数分成4个区域,每一个区域是"for...of"遍历的一块
+        console.log("block 2");
+        yield "block2 is end!";
+        console.log("block 3");
+        yield "block3 is end!";
+        console.log("block 4");
+    }
+    let iterator2 = generator();    // "generator"可以传入参数,将存入"arguments"
+    console.log(iterator2.next());  // "next"也可以传入参数,将作为"yield"的返回值
+    console.log(iterator2.next());
+    console.log(iterator2.next());
+    console.log(iterator2.next());
+    // 同理可以使用"for...of"
+
+    // 生成器的应用
+    // 1s后输出"111",然后2s后输出"222",然后3s后输出"333"
+    // 以前的写法-回调地狱
+    setTimeout(() => {
+        console.log("111");
+        setTimeout(() => {
+            console.log(222);
+            setTimeout(() => {
+                console.log(333);
+            }, 3000);
+        }, 2000);
+    }, 1000);
+
+    // 使用生成器的写法,解决回调地狱
+    function time1() {
+        setTimeout(() => {
+            console.log("111");
+            iterator3.next();
+        }, 1000);
+    }
+    function time2() {
+        setTimeout(() => {
+            console.log("222");
+            iterator3.next();
+        }, 2000);
+    }
+    function time3() {
+        setTimeout(() => {
+            console.log("333");
+            iterator3.next();
+        }, 3000);
+    }
+    function* timeGengerator() {
+        yield time1();
+        yield time2();
+        yield time3();
+    }
+
+    let iterator3 = timeGengerator();
+    iterator3.next();
+
+    // "Set"集合:同样可以使用"for...of"循环
+    let set = new Set([1, 3, 4, 3, 2, 4, 0, -1]);  // 自动去重
+    console.log(set);
+    // 常用方法
+    // set.size
+    // set.add(10);
+    // set.delete(-1);
+    // set.clear();
+    // set.has(1);  // 如果存在元素,返回"true",否则返回"false"
+
+    // "Map"集合:"key"和"value"可以是任何类型,可以使用"for...of"循环
+    let map = new Map();
+    // map.set("name", "zhangsan");
+    // map.get("name");
+    // map.delete("name");
+    // map.size;
+    // map.clear();
+
+    // "Promise"对象有3种状态:1.pending 2.fulfilled 3.rejected
+    const promise = new Promise(function (resolve, reject) {
+        // 根据具体情况,如果成功了,调用resovle(),失败了调用reject()
+        const conditions = [{
+            statusCode: 200,
+            message: "success"
+        }, {
+            statusCode: 400,
+            message: "fail"
+        }];
+        const random = Math.floor(Math.random() * 2);
+        const data = conditions[random];
+        if (data.statusCode === 200) {
+            resolve(data);
+        }
+        else {
+            reject(data);
+        }
+    });
+    // "Promise"对象有"then"方法,参数为两个函数,成功则调用第一个函数,否则调用第二个函数
+    // "then"的返回值是一个"Promise"对象(其状态仍然通过"resolve"和"reject"决定),[PromiseResult]]的值通过"return"进行设置
+    const p = promise.then(function (result) {
+        console.log(result);
+        return result;
+    }, function (error) {
+        console.error(error);
+        return error;
+    });
+    console.log(p);
+
+    // "Promise"的捕获异常
+    promise.catch(function(error) {
+        console.error(error);
+    });
+
+    // "Promise"的应用
+    const pro = new Promise(function(resolve, reject) {
+        // 创建XMLHttpRequest对象
+        const xhr = new XMLHttpRequest();
+        // 初始化
+        xhr.open("GET", "https://api.apiopen.top/getJoke");
+        // 发送请求
+        xhr.send();
+        // 处理结果
+        xhr.onreadystatechange = function() {
+            if(xhr.readyState === 4) {
+                if(xhr.status === 200) {
+                    resolve(xhr.response);
+                }
+                else {
+                    reject(xhr.response);
+                }
+            }
+        }
+    });
+    pro.then(function(result) {
+        // console.log(result);
+    }, function(error) {
+        console.error(error);
+    });
+
+    // 类:是ES5的语法糖
+    class Person {
+        name;
+        age;
+        // 构造方法
+        constructor(name, age) {
+            this.name = name;
+            this.age = age;
+        }
+        // 成员方法,不能使用"function Greeting() {}"完整版形式
+        Greeting() {
+            console.log("Hello, Person!");
+        }
+        // 静态方法
+        static Fly() {
+            console.log("A person can fly!");
+        }
+
+        // getter和setter方法
+        get getName() {
+            return this.name;
+        }
+        set setName(value) {
+            this.name = value;
+        }
+    }
+    let zhangsan = new Person("zhangsan", 18);
+    console.log(zhangsan);
+    Person.Fly();
+
+    // 类的继承
+    class CrazeMan extends Person {
+        
+        constructor(name, age, gender) {
+            super(name, age);
+            this.gender = gender;
+        }
+
+        // 方法重写
+        Greeting() {
+            // 调用父类的同名函数
+            super.Greeting();
+            console.log("Hello, CrazyMan!");
+        }
+    }
+    let crazyLisi = new CrazeMan("lisi", 20, "female");
+    console.log(crazyLisi);
+    crazyLisi.Greeting();
+
+    // 数值方面的扩展
+    // ES6新增"Number.EPSILON",其表示JS中的最小精度
+    // 当两数之差小于这个精度时,我们认为两个数相等
+    console.log(0.1 + 0.2 === 0.3);
+    console.log(Math.abs(0.1 + 0.2 - 0.3) < Number.EPSILON);  // 可以通过这个解决上面的"难题"
+
+    // 新方法
+    // Number.isFinite(100 / 0);
+    // Number.isNaN(10);
+    // Number.isInteger(3.14);
+    // Number.trunc(3.14);  // 将小数点抹去
+    // Number.sign(-1);  // 判断数值为正数(1),0(0)还是负数(-1)
+
+    // 对象方面的扩展
+    // Object.is(NaN, NaN);  // 判断两个数值是否相等,与"==="类似,但是这个例外
+    // console.log(NaN === NaN);  // false
+    // Object.assign(obj1, obj2);  // 对象的合并,如果存在相同的属性,后者覆盖前者
+    // Object.setPrototypeOf(obj1, obj2);  // 设置obj1的原型对象是obj2
+    // Object.getPrototypeOf(obj1);
+
+    // ES7新特性
+
+    // 判断数组中是否存在某个元素
+    const a20 = ["zhangsan", "lisi", "wangwu"];
+    console.log(a20.includes("maliu"));  // 之前可以使用"indexOf"方法进行判断
+
+    // "**"新运算符
+    console.log(2 ** 10 === Math.pow(2, 10));  // true
+
+    // ES8新特性
+
+    // "async"和"await":使异步操作看起来像同步操作
+    async function Temp() {
+        // 返回类型为非"Promise"对象或者状态为"fulfilled"状态的"Promise"对象,
+        // 那么该异步函数的返回也是一个状态为"fulfilled"状态的"Promise"对象.
+        return "status Ok";
+        // return new Promise((resolve, reject) => {...});
+        // 抛出异常或者状态为"rejected"状态的"Promise"对象,
+        // 那么该异步函数的返回也是一个状态为"rejected"状态的"Promise"对象.
+        // throw new Error("error");
+        // return new Promise((resolve, reject) => {...});
+
+        // "await"只能写在"async"的函数中,由于没有了".catch",因此需要使用"try-catch"语句捕获异常
+    }
+
+    // "async"和"await"的应用
+    async function Test() {
+        let result = await pro;
+        console.log(result);
+    }
+    // Test();
+
+    // 对象方法的扩展
+    const phone = {
+        "name": "Andriod",
+        "price": 100,
+        "description": ["good", "bad", "ok"]
+    };
+    console.log(Object.keys(phone));
+    console.log(Object.values(phone));
+    console.log(Object.entries(phone));  // 将对象转化为二维数组
+
+    const me = Object.create(null, {
+        name: {
+            value: "chouyatou",
+            // 修饰
+            writable: false,  // 可修改的
+            configurable: false,  // 可删除的
+            enumerable: false  // 可枚举的
+        }
+    });
+    console.log(Object.getOwnPropertyDescriptors(me));
+
+    // ES9新特性
+    // 扩展运算符的新场景
+    function Disconnect({host, port, ...userInfo}) {  // 组合形参
+        console.log(host);
+        console.log(port);
+        console.log(userInfo);
+    }
+    Disconnect({ 
+        host:"119.91.251.173",
+        port: 80,
+        username: "zhangsan",
+        password: "123456" 
+    });
+
+    const doll = {
+        "name": "洋娃娃",
+        "price": 100
+    };
+    console.log({...doll, ...phone});  // 可以将对象变成字符串形式
+
+    // 正则命名分组(你和Golang什么关系),好处在于不用索引获取值
+    let tag = "<a href='www.baidu.com'>百度</a>";
+    let regx = /<a href='(?<url>.*)'>(?<name>.*)<\/a>/g;
+    const result = regx.exec(tag);
+    console.log(result);
+
+    // 正则表达式的正向断言和反向断言
+    let str1 = "我是123李四567王八";
+    const forwardRegx = /\d+(?=王)/g;  // 要后面的字符是'王'的那一组数字
+    console.log(forwardRegx.exec(str1));
+    const backwardRegx = /(?<=是)\d+/g;  // 要前面的字符是'是'的那一组数字
+    console.log(backwardRegx.exec(str1));
+
+    // 新增"."表示任意字符,ES9之前只表示除了换行符以外的符号
+
+    // ES10新特性
+    // 对象方法的扩展
+    const array1 = [
+        ["name", "wangba"],
+        ["price", 100],
+        ["nature", "good"]
+    ];
+    console.log(Object.fromEntries(array1));  // 将二位数组转化为对象
+
+    // "trimStart"和"trimEnd"函数
+    let str2 = "   I love you!   ";
+    console.log(str2);
+    console.log(str2.trim());
+    console.log(str2.trimStart());
+    console.log(str2.trimEnd());
+
+    // "flat"和"flatMap"函数
+    let array2 = [1, 2, 3, [4, 5, [6]]];
+    console.log(array2.flat(1));  // "flat"函数中的参数表示数组降低的维度
+
+    let array3 = [1, 2, 3, 4, 5];
+    let multiArray1 = array3.map(value => [value * 10]);  // map函数
+    console.log(multiArray1);
+
+    let array4 = [1, 2, 3, 4, 5];
+    let multiArray2 = array4.flatMap(value => [value * 10]);
+    console.log(multiArray2);
+
+    // 将"Symbol"类型变量转化为字符串
+    let symbol1 = Symbol("zhangsan");
+    console.log(symbol1, symbol1.description);
+
+    // ES11新特性
+    // 支持类的私有属性
+    class Gril {
+        name;  // 公有属性
+        #age;  // 私有属性
+        // 构造函数
+        constructor(name, age) {
+            this.name = name;
+            this.#age = age;  // 私有属性的赋值方式
+        }
+        
+        Greeting() {
+            console.log("我叫" + this.name + ",今年" + this.#age + "岁!");
+        }
+    }
+    let yumanting = new Gril("yumanting", 18);
+    console.log(yumanting.name);
+    // console.log(yumanting.#age);  // 报错
+    yumanting.Greeting();
+
+    // "Promise"对象新增"allSettled"方法
+    let promise1 = new Promise((resolve, reject) => {
+        resolve("success");
+    });
+    let promise2 = new Promise((resolve, reject) => {
+        // resolve("success");
+        reject("fail");
+    });
+    // 无论数组参数中的"Promise"是否成功,"allResults"都是成功的
+    // 而每一个"Promise"的状态和数据会在"allResults"的结果中
+    const allResults1 = Promise.allSettled([promise1, promise2]);
+    console.log(allResults1);
+    // 数组参数中的"Promise"只要有一个失败,"allResults"都是失败的,且"allResults"的结果为失败的返回值
+    // 而如果每一个"Promise"都成功,那么与"allSettled"方法的结果相同
+    const allResults2 = Promise.all([promise1, promise2]);
+    console.log(allResults2);
+
+    // 正则表达式新增"matchAll"方法,作用见名知意
+    // 返回对象是一个可迭代对象,即存在"iterator",可以使用"for...of"循环或者"..."进行展开
+
+    // 可选链操作符"?.",其类似于三元表达式
+    function TestN(config) {
+        // ES11前
+        // const host = config && config.database && config.database.host;
+        // console.log(host);
+        // ES11后
+        const host = config?.database?.host;
+        console.log(host);
+    }
+    TestN();
+    TestN({
+        others: {
+            host: "127.0.0.1"
+        }
+    });
+    TestN({
+        database: {
+            host: "127.0.0.1"
+        }
+    });
+
+    // 动态引入:只有需要模块时才导入
+    var button1 = document.getElementById("button1");
+    button1.onclick = function () {
+        // 动态引入模块
+        import("./module.js").then(module=>{
+            console.log(module);
+        });
+    };
+
+    // 新增包装类"BigInt"
+    let big = 123n;
+    console.log(big, typeof big);
+
+    console.log(BigInt(456));
+
+    let maxInt = Number.MAX_SAFE_INTEGER;
+    console.log(maxInt + 1);
+    console.log(maxInt + 2);
+    console.log(BigInt(maxInt) + BigInt(1));
+    console.log(BigInt(maxInt) + BigInt(2));
+
+    // 新增全局变量:globalThis,其始终指向"window"对象
+    console.log(globalThis);
+
+    // 后记:恭喜你,你完成了ES6-ES11的学习;
+    // 学习中你接触到了JS的两个高级函数:"filter"和"map",你需要时可以搜索一下
+    // 还有一个是"reduce"函数,可以有个印象,这里没有涉及到
+</script>
+<script type="module">
+    // 模块化:将大文件拆分成小组件,方便维护,复用和防止命名冲突等
+    // 典型模块化的例子:CommonJS下的NodeJS
+
+    // 通过"export"对外暴露接口,"import"引入其他模块的接口
+    import * as mod from "./module.js";  // 通用引入,"as"为别名
+    /*
+    *   解构引入:
+    *   import { dog as DOG, bark } from "./module.js";
+    *   import { default as CAT } from "./module.js";
+    */
+    // import CAT from "./module.js";  // 默认暴露的简便形式
+    console.log(mod);
+    // 默认暴露访问模块时,会多一步,其他两种暴露直接访问即可
+    console.log(mod.planet);
+    console.log(mod.dog);
+    console.log(mod.default.cat);
+
+    // 当然也可以将上面的代码另写一个JS文件,然后再引入
+
+    // 最后一点,并不是所有浏览器都支持ES6的模块新特性,
+    // 因此之前见到的"babel"相关的工具是将ES6语法转化为ES5语法,
+    // 具体这里不细说,如果有需要去官网看看.
+</script>
+</html>

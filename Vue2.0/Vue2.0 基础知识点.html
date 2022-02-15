@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Vue.js知识点</title>
+        <style>
+            .basic {
+                width: 200px;
+                height: 200px;
+                border: 5px solid black;
+            }
+            .style1 {
+                background-color: orange;
+            }
+            .style2 {
+                background-color: gray;
+            }
+            .style3 {
+                background-color: blue;
+            }
+            [v-cloak] {
+                display: none;
+            }
+        </style>
+        <!--引入Vue.js--->
+        <script type="text/javascript" src="./vue.js"></script>
+        <script type="text/javascript" src="./dayjs.min.js"></script>
+    </head>
+    <body>
+        <!--
+            MVVC模型:
+                1."M"(Modal):表示Vue示例中的"data"模型;
+                2."V"(View):表示"View"视图,比如'root'容器;
+                3."VM"(ViewModal):表示Vue实例,比如"vm"实例.
+        -->
+        <div id="root">
+            <div>Hello,{{name}}!</div>
+            <!--单向数据绑定"-->
+            <a v-bind:href="url">哆啦A梦</a> <br />
+            <a :href="url">哆啦A梦(省略)</a> <br />
+            <!--"class"的绑定-->
+            <!--字符串格式:适用于样式的名称不确定的情况-->
+            <div class="basic" v-bind:class="classString" v-on:click="changeClassString">哆啦A梦(class)</div> <br />
+            <!--数组格式:适用于样式的名称和个数都不确定的情况-->
+            <div class="basic" v-bind:class="classArray" v-on:click="changeClassArray">哆啦A梦(class)</div> <br />
+            <!--对象格式:适用于样式的名称和个数都确定的,但是是否使用不确定情况-->
+            <div class="basic" v-bind:class="classObject" v-on:click="changeClassObject">哆啦A梦(class)</div> <br />
+            <!--"style"的绑定-->
+            <div class="basic" v-bind:style="styleArray">哆啦A梦(style)</div>
+            <div class="basic" v-bind:style="styleObj">哆啦A梦(style)</div>
+            <!--双向数据绑定:目前只能应用于表单元素,比如输入框,单选框等-->
+            <input type="text" v-model:value="msg" /> <br />
+            <input type="text" v-model="msg" /> <br />
+            <!--方法绑定-->
+            <button v-on:click="showDetails()">哆啦C梦</button> <br />
+            <button @click="showDetails($event, '哆啦C梦',)">哆啦C梦(省略)</button> <br />
+            <!--
+                事件修饰符:可以一次使用多个修饰符
+                    1.prevent:阻止默认事件的发生,比如"a"标签的跳转,与方法中的"e.preventDefault()"相同;
+                    2.stop:阻止事件冒泡,与方法中的"e.stopPropagation()"相同;
+                    3.once:事件只能触发一次;
+                    4.capture:系统会捕获用户触发事件,然后进行冒泡,从而调用方法,而"capture"修饰符可以在捕获阶段就能调用方法;
+                    5.self:当操作元素为自身(e.target)时,事件才会触发;
+                    6.passive:立即执行事件的默认行为,无需等待方法完成.
+            -->
+            <a v-bind:href="url" v-on:click.prevent="showDetails">哆啦D梦</a>
+
+            <div style="width: 100px;height: 100px;background-color: #bfa;" v-on:click="showDetails">
+                <button v-on:click.stop="showDetails">哆啦D梦</button>
+            </div>
+
+            <button v-on:click.once="showDetails">哆啦D梦</button>
+
+            <div style="width: 100px;height: 100px;background-color: #bfa;" v-on:click.capture="showDetails('外层元素调用方法')">
+                <div v-on:click="showDetails('内层元素调用方法')">哆啦D梦</div>
+            </div>
+            
+            <div style="width: 100px;height: 100px;background-color: #bfa;" v-on:click.self="showDetails('外层元素调用方法')">
+                <button v-on:click="showDetails('内层元素调用方法')">哆啦D梦</button>
+            </div>
+
+            <!--
+                键盘事件:"keyup/keydown"
+                    1.Vue中定义的按键别名:
+                        (I)"enter"  (II)"delete":按下"Del"或回退键触发事件; (III)"esc":按下"Esc"键触发事件;
+                        (IV)"space" (V)"tab"    (VI)"up"/"down"/"left"/"right"
+                    2.其他按键:可以使用"e.key"和"e.keyCode"输出按键的名称和按键对应的编码;
+                        【注意1】:如果某个键的名称由多个单词组成,那么应该写成"(小写单词1)-(小写单词2)",
+                        比如:切换大小写的键,在键盘上为"CapsLock",但是在Vue中的键盘事件中要写成"caps-lock".
+                        【注意2】:系统键"Tab","Ctrl","Shift"和"Meta"
+                            (1)如果使用"keyup",那么需要按住两个键,然后释放另一个无关的键才能触发键盘事件;
+                            (2)如果使用"keydown",那么需要按下相应的键就能触发键盘事件;
+                            (3)可以配合其他按键变成组合键,比如"@keydown.ctrl.y".
+            -->
+            <div>
+                <input type="text" placeholder="哆啦E梦" @keyup.enter="showDetails" /> <br />
+                <input type="text" placeholder="哆啦E梦" @keydown.Enter="showDetails" /> <br />
+                <input type="text" placeholder="哆啦E梦" @keydown.huiche="showDetails" /> <br />
+            </div>
+
+            <!--计算属性-->
+            <div>{{content}}</div>
+            <!--侦听属性:使用控制台修改"school"值即可看到效果-->
+
+            <!--条件渲染:
+                    1."v-show":通过设置"display"属性进行元素的显示或隐藏,适用于频繁切换的场景;
+                    2."v-if/v-else-if/v-else":通过删除元素进行元素的显示或隐藏,适用于不频繁切换的场景;
+                    【附】:"v-if"可以与"template"元素(最后渲染时不会影响结构)进行配合,对一组元素进行渲染.
+            -->
+            <div v-show="true">哆啦F梦</div>
+
+            <div v-if="number === 1">哆啦G梦</div>
+            <div v-else-if="number === 2">哆啦G梦</div>
+            <div v-else-if="number === 3">哆啦H梦</div>
+            <div v-else>成功起飞!</div>
+
+            <template v-if="number === 4">
+                <div>小彩蛋!!!</div>
+            </template>
+
+            <button v-on:click="changeShow">点击我起飞</button>
+
+            <!--列表渲染:除了遍历常见的数组和对象,还可以遍历字符串和类似于"Python"中的"for i in range(0, 5)".
+                【补充】:"key"的作用(因此,不写"key"问题很严重,使用"index"问题有点严重,使用自带"id"很好)
+                    1.当页面初次渲染时,会根据初始数据生成虚拟的"DOM",再生成真实的页面"DOM",比如:
+                        {"id": 0, "name": "小明"} -> <li key="0"> 小明 <input type="text" /></li>
+                        {"id": 1, "name": "小王"} -> <li key="1"> 小王 <input type="text" /></li>
+                        {"id": 2, "name": "小红"} -> <li key="2"> 小红 <input type="text" /></li>
+                    2.当数据发生改变时,依然会根据数据生成新虚拟的"DOM",即:
+                        {"id": 4, "name": "小刘"} -> <li key="4"> 小刘 <input type="text" /></li>
+                        {"id": 0, "name": "小明"} -> <li key="0"> 小明 <input type="text" /></li>
+                        {"id": 1, "name": "小王"} -> <li key="1"> 小王 <input type="text" /></li>
+                        {"id": 2, "name": "小红"} -> <li key="2"> 小红 <input type="text" /></li>
+                    3.根据虚拟"DOM"算法,依据"key"值在新旧虚拟"DOM"中寻找差异:
+                        新"DOM": key=4 -> 旧"DOM": 没有key=4的"DOM",生成真实的页面"DOM";
+                        新"DOM": key=0 -> 旧"DOM": 存在key=0的"DOM",复用已生成的"DOM",以此类推.
+            -->
+            <ul>
+                <li v-for="(item, index) in courses" :key="item.id">
+                    {{item.name}}---{{item.teacher}}
+                </li>
+            </ul>
+
+            <ul>
+                <li v-for="(value, key) in car" :key="key">
+                    {{key}}:{{value}}
+                </li>
+            </ul>
+
+            <!--"Vue.set()"API的使用-->
+            <div>
+                <div>姓名:{{student.name}}</div>
+                <div>性别:{{student.gender}}</div>
+                <div v-if="student.age">年龄:{{student.age}}</div>
+                <button v-on:click="addAge">点击添加大雄的年龄</button>
+            </div>
+            
+            <!--收集表单数据-->
+            <!--双向绑定有三个常用修饰符:"trim","number"和"lazy"-->
+            <form v-on:submit.prevent="submitForm">
+                <label for="username">账号:</label>
+                <input type="text" id="username" placeholder="请输入账号" v-model:value.trim="userInfo.username" /> <br />
+                <label for="password">密码:</label>
+                <input type="password" id="password" placeholder="请输入密码" v-model:value="userInfo.password" /> <br />
+                <!--单选框:Vue收集选中对象的"value"属性值,如果没有,那么值为"null"-->
+                <div>性别:</div>
+                <input type="radio" name="gender" v-model:value="userInfo.gender" value="male" />男
+                <input type="radio" name="gender" v-model:value="userInfo.gender" value="female" />女
+                <div>年龄:</div>
+                <input type="number" v-model:value.number="userInfo.age" />
+                <!--多选框:Vue默认收集对象的"checked"属性值,当存在"value"属性值时,其收集对象的"value"值,需要看情况而定-->
+                <div>爱好:</div>
+                <input type="checkbox" name="hobby" v-model:value="userInfo.hobby" value="sing" />唱跳
+                <input type="checkbox" name="hobby" v-model:value="userInfo.hobby" value="rap" />rap
+                <input type="checkbox" name="hobby" v-model:value="userInfo.hobby" value="basketball" />打篮球
+                <div>出战英雄:</div>
+                <select name="hero" v-model:value="userInfo.myHero">
+                    <option value="哆啦J梦">哆啦J梦</option>
+                    <option value="哆啦K梦">哆啦K梦</option>
+                    <option value="哆啦L梦">哆啦L梦</option>
+                    <option value="哆啦M梦">哆啦M梦</option>
+                </select>
+                <div>其他信息:</div>
+                <textarea v-model:value.lazy="userInfo.others" value="information"></textarea>  <br />
+                <!--此时多选框不需要指定"value"值,只需要获得是否勾选的信息-->
+                <input type="checkbox" v-model:value="userInfo.agreement" />
+                <span>
+                    阅读并接受
+                    <a href="https://www.chouyatou.club">《用户协议》</a>
+                </span> <br />
+                <button>提交</button>
+            </form>
+
+            <!--过滤器:类似Linux的"|"符号,前面的输出作为后面的第一个参数输入-->
+            <div>当前时间为:{{Date.now() | FormatTime()}}</div>
+
+            <!--Vue的内置指令:除了常用的v-bind,v-model,v-if等,还有v-text,v-html,v-cloak等-->
+            <!--"v-text":将指定内容不进行任何加工替换标签中的内容,比如:指定内容为"<h1>标题</h1>",输出"<h1>标题</h1>"-->
+            <div v-text="vmsg"></div>
+            <!--"v-html":将指定内容进行一定的加工替换标签中的内容,存在一定的安全性问题-->
+            <div v-html="vdangerMsg"></div>
+            <!--"v-cloak":配合CSS使用,当渲染页面的JS文件还没有请求回来时,可以隐藏元素,避免出现未渲染的元素,且当Vue接管容器时,会清除该属性-->
+            <div v-cloak>{{name}}</div>
+            <!--"v-once":初次渲染后,即使发生变化,不再进行更新-->
+            <div v-once>哆啦{{character}}梦</div>
+            <div>哆啦{{character}}梦</div>
+            <button v-on:click="changeCharacter">点击变化哆啦A梦</button>
+            <!--"v-pre":Vue不会解析编译拥有该属性的元素,可以稍稍稍稍微优化一下-->
+            <div v-pre>哆啦N梦不需要编译</div>
+
+            <!--Vue的自定义指令:需要直接操作DOM元素,当指令名称含有多个单词时,推荐使用连字符进行连接,同时大写字符一律转换成小写字母-->
+            <div>
+                当前的number*10值:
+                <span v-big="number">{{number}}</span>
+            </div>
+            <input type="text" v-focus="number" />
+            <div v-fly-immediately>即将起飞!</div>
+
+            <!--生命周期函数-->
+            <div v-bind:style="{opacity: opacity}">闪烁的哆啦O梦</div>
+            <button v-on:click="stopBlink">停止闪烁</button>
+        </div>
+        <script type="text/javascript">
+            // 关闭生产环境警告提示
+            Vue.config.productionTip = false;
+            // 自定义按键别名
+            Vue.config.keyCodes.huiche = 13;
+            // 全局过滤器
+            Vue.filter("FormatTime", function(time){
+                return dayjs(time).format("YYYY-MM-DD HH:mm:ss");
+            });
+            // 全局指令
+            Vue.directive('fly-immediately', function(element, binding){
+                setTimeout(()=>{
+                    element.innerText = "已经过了3秒了...";
+                }, 1000*3);
+            });
+
+            // 创建Vue实例(容器和实例为一一对应关系)
+            // "Vue"检测对象或数组改变的原理详情请看B站P33-P37
+            // 简单来说:"Vue"通过"get()"和"set()"函数监视对象,而通过包装数组的常用方法进行监视数组
+            // 也就是说,当对象内部发生变化时,"get()"和"set()"函数重新解析页面,
+            // 而数组发生变化时,先正常调用数组的常用方法,然后重新解析页面(即:Array.prototype.push !== (vm中的数组).push,且以后不要在通过"this.array[index] = 值"更新Vue中的数组了)
+            const vm = new Vue({
+                // Vue示例为指定容器服务
+                el:'#root',  // CSS选择器字符串
+                // Vue解析模板:通俗一点,上面的HTML元素可以写到这里,效果相同,注意只能有一个根标签
+                // template: `
+                //     <div id="root">
+                //         <h1>我是"h1"标签</h1>
+                //         <div>我是"div"标签</div>
+                //     </div>
+                // `,
+                // 为指定容器提供数据
+                data: {
+                    name: 'Vue.js',
+                    msg: '哆啦B梦',
+                    url: 'https://www.chouyatou.club',
+                    school: {
+                        address: "在地球",
+                        name: "GZHU"
+                    },
+                    classString: "style1",
+                    classArray: ["style1", "style2", "style3"],
+                    classObject: {
+                        "style1": false,
+                        "style2": false,
+                        "style3": false
+                    },
+                    // Vue中的CSS样式不使用连字符,使用小驼峰命名法
+                    styleArray: [
+                        {
+                            fontSize: '60px',
+                            fontWeight: '600'
+                        },
+                        {
+                            fontSize: '40px',
+                            color: '#bfa'
+                        },
+                        {
+                            fontWeight: '600',
+                            color: 'red'
+                        }
+                    ],
+                    styleObj: {
+                        fontSize: '60px',
+                        fontWeight: '600',
+                        color: 'red'
+                    },
+                    number: 0,
+                    courses: [
+                        {
+                            id: 0,
+                            name: "语文",
+                            teacher: "小明"
+                        },
+                        {
+                            id: 1,
+                            name: "数学",
+                            teacher: "小王"
+                        },
+                        {
+                            id: 2,
+                            name: "小红",
+                            teacher: "小红"
+                        }
+                    ],
+                    car: {
+                        name: "奥迪双钻",
+                        from: "中国",
+                        price: 10
+                    },
+                    student:{
+                        name: "大雄",
+                        gender: "男"
+                    },
+                    userInfo: {
+                        username: "",
+                        password: "",
+                        gender: "male",
+                        age: 0,
+                        hobby: [],
+                        myHero: "",
+                        others: "",
+                        agreement: ""
+                    },
+                    vmsg: "<h1>标题</h1>",
+                    vdangerMsg: "<a href=javascript:location.href='#'+document.cookie>暴露Cookie</a>",
+                    character: 'A',
+                    opacity: 1
+                },
+                // // 为指定容器提供数据:适用于组件
+                // data:function() {
+                //     return {
+                //         name: 'Vue.js',
+                //         msg: '哆啦B梦',
+                //         url: 'https://www.chouyatou.club'
+                //     }
+                // },
+                // 为指定容器提供方法
+                methods: {
+                    changeClassString:function() {
+                        const style = ["style1", "style2", "style3"];
+                        this.classString = style[Math.floor(Math.random() * 3)];
+                    },
+                    changeClassArray:function() {
+                        this.classArray.splice(Math.floor(Math.random() * 3), 1);
+                    },
+                    changeClassObject:function() {
+                        this.classObject.style1 = true;
+                    },
+                    showDetails:function(params) {
+                        console.log(params.key,params.keyCode);
+                    },
+                    changeShow:function() {
+                        this.number++;
+                    },
+                    addAge:function() {
+                        // "Vue.set()"API可以在给对象添加新属性,同时生成对应的"get()"和"set()"函数,或者数组更新时,页面能够重新响应解析
+                        // 从而达到"数据改变时,页面上的所有数据都发生改变"的效果;
+                        // 如果直接在控制台中输入"vm._data.student.age = 18"等其他方式,是无法达到这样的效果的
+                        // 同时注意第一个参数不能为"vm","vm.data"或"vm._data"
+                        Vue.set(this._data.student, "age", 18);
+                        Vue.set(this.student, "age", 18);
+                    },
+                    submitForm:function() {
+                        console.log(JSON.stringify(this.userInfo));
+                    },
+                    changeCharacter:function() {
+                        // JS不想C++那样哦,有专门的函数进行ASCII码的转换
+                        this.character = String.fromCharCode((this.character.charCodeAt() + 1));
+                    },
+                    stopBlink:function() {
+                        // 一般不推荐主动调用释放
+                        this.$destroy();
+                    }
+                    // 为组件绑定事件
+                    // this.$on("事件名", 回调函数);
+                },
+                // 计算属性
+                computed: {
+                    content: {
+                        get:function() {
+                            // Vue将"vm"实例保存在"this"对象中
+                            return this.msg + "在" + this.url + "创建了一个网站!";
+                        },
+                        set:function(value) {
+                            const array = value.split("www.");
+                            console.log(array);
+                        }
+                    }
+                    // 如果能够确保计算属性只读,那么可以简写为下列方式
+                    // content:function() {
+                    //      return this.msg + "在" + this.url + "创建了一个网站!";
+                    // }
+                },
+                // 监视属性:除了可以监视"data"中的数据,还可以监视"computed"的计算属性
+                watch: {
+                    msg: {
+                        // 当"immediate"为"true"时,"handler"函数会初始化时执行一次
+                        immediate: true,
+                        handler:function(newValue, oldValue) {
+                            console.log("新目标:", newValue, "旧目标:", oldValue);
+                        }
+                    },
+                    'school.address': {
+                        handler:function(newValue, oldValue) {
+                            console.log("学校新址:", newValue, "旧址:", oldValue);
+                        }
+                    },
+                    school: {
+                        // 深度监视:当"deep"为"true"时,对象中任何一个数据发生变化,"handler"函数都会执行
+                        deep: true,
+                        handler:function() {
+                            console.log("学校变化了!");
+                        }
+                    }
+                },
+                // 局部过滤器
+                filters: {
+                    FormatTime(time) {
+                        return dayjs(time).format("YYYY-MM-DD HH:mm:ss");
+                    }
+                },
+                // 局部自定义指令
+                // 注意:由于直接操作DOM元素,因此"directives"中的"this"不是指向"vm",而是"Windows"
+                directives: {
+                    // 函数式:页面初始化或者其模板被重新解析(比如:其他数据发生变化)时都会调用指令
+                    big:function(element, binding) {
+                        // console.log(element, binding);
+                        element.innerText = binding.value * 10;
+                    },
+                    // 对象式
+                    focus: {
+                        // 页面初始化时调用
+                        bind:function(element, binding) {
+                            // 通常指定元素的样式,初始值或绑定事件等
+                            element.className = "style1";
+                            element.value = binding.value;
+                            element.onclick = () => {
+                                console.log("调用了bind函数!");
+                            };
+                        },
+                        // 元素出现或插入页面时调用
+                        inserted:function(element, binding) {
+                            // 可以写元素的进一步功能,比如:获取焦点等
+                            element.focus();
+                        },
+                        // 模板被重新解析时调用
+                        update:function(element, binding) {
+                            // 通常和"bind"函数有相同的操作
+                            element.value = binding.value;
+                        }
+                    },
+                    "fly-immediately":function(element, binding) {
+                        setTimeout(()=>{
+                            element.innerText = "已经过了3秒了...";
+                        }, 1000*3);
+                    }
+                },
+                // 生命周期函数
+                // 初始化:生命周期和事件(比如确认once修饰符),但是未进行数据代理
+                beforeCreate:function() {
+                    console.log("beforeCreate", this);
+                    // "debugger"为设置断点
+                    // debugger;
+                },
+                // 初始化:进行数据检测和数据代理
+                created:function() {
+                    console.log("created", this);
+                    // debugger;
+                },
+                // 此时Vue开始解析页面模板,生成虚拟DOM,但是页面还不能显示解析好的模板
+                // 挂载前的函数:此时对DOM进行操作最终是无效的
+                beforeMount:function() {
+                    console.log("beforeMount", this);
+                    // debugger;
+                },
+                // 挂载函数(常用):Vue第一次完成页面解析,进行发送请求,开启定时器等初始化操作
+                mounted:function() {
+                    this.timer = setInterval(()=>{
+                        this.opacity = this.opacity - 0.01;
+                        if(this.opacity <= 0.0) { this.opacity = 1; }
+                    }, 12);
+                },
+                // 更新之前的函数:数据发生改变,页面未发生改变,即:页面与数据不同步
+                beforeUpdate:function() {
+                    console.log("beforeUpdate", this);
+                    // debugger;
+                },
+                // 更新函数:数据与页面同步
+                updated:function() {
+                    console.log("updated", this);
+                    // debugger;
+                },
+                // 释放之前的函数(常用):"vm"中的"data"和"methods"仍然可以使用和更新,但是页面不再更新,进行关闭定时器等释放操作
+                beforeDestroy:function() {
+                    clearInterval(this.timer);
+                    console.log("beforeDestroy", this);
+                    // debugger;
+                },
+                // 释放函数:释放Vue实例,移除监听器,与其他实例的联系
+                destroyed:function() {
+                    console.log("destroyed", this);
+                    // debugger;
+                }
+            });
+            // Vue实例监视某个属性
+            vm.$watch('msg', {
+                immediate: true,
+                handler:function(newValue, oldValue) {
+                    console.log("新目标:", newValue, "\t旧目标:", oldValue);
+                }
+            });
+            /* "Vue"中的"computed"和"watch":
+            *  具体情况使用哪种方式简洁需要根据情况而定,
+            *  比如:需要异步操作(e.g:setTimeout)时,需要使用"watch"而不是"computed".
+            */
+            // Vue示例为指定容器服务,方法较为灵活
+            vm.$mount('#root');
+            // Vue实例添加或删除对象属性或修改数组且为响应式的方法
+            // vm.$set(vm.student, 'age', 18);
+            // vm.$delete(vm.student, 'age', 18);
+            // "Object.defineProperty(Object, key, {value})"方法:新增属性
+            let person = {
+                name: "张三",
+                gender: '男'
+            };
+            let baby = {
+                name: "李四",
+                gender: "女",
+                age: 0
+            };
+            Object.defineProperty(person, 'age', {
+                // value:18,
+                // enumerable: true,  // 控制属性是否可以被枚举
+                // writable: true,  // 控制属性是否可以被修改
+                // configurable: true,  // 控制属性是否可以被删除
+                // 注意"get()"和"set()"函数不能与上面四个配置项共存
+                // 当外部读取"age"属性时,"get()"函数自动调用,返回值为"age"属性值
+                get:function() {
+                    return baby.age;
+                },
+                // 当外部修改"age"属性时,"set()"函数自动调用
+                set:function(value) {
+                    baby.age = value;
+                }
+                // 数据代理:我们的data数据被封装在Vue实例的"_data"属性中,由于中间存在数据代理,因此我们可以直接访问,而其中起到关键作用的是"get()"函数和"set()"函数
+                // e.g:"data"中的"url"属性,在HTML标签中,我们可以直接使用"url",而如果没有数据代理,我们需要使用"_data.url"
+            });
+            console.log(Object.keys(person));
+        </script>
+    </body>
+</html>

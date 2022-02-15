@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript 文档模型对象</title>
+    <style type="text/css">
+        .square {
+            width: 50px;
+            height: 50px;
+        }
+
+        #info p {
+            width: 400px;
+            height: 200px;
+            overflow: auto;
+            border: 1px solid black;
+        }
+
+        #drag {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            right: 0;
+            background-color: red;
+        }
+
+        #scroll {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            right: 0;
+            min-height: 10px;
+            transform: translateY(40px);
+            background-color: orange;
+        }
+
+        #menu * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        #menu {
+            width: 150px;
+        }
+
+        #menu div {
+            overflow: hidden;
+        }
+
+        #menu .collapsed {
+            height: 30px;
+        }
+
+        #menu div .menuBar::before {
+            display: inline-block;
+            /* before和after有默认样式 */
+            content: '';
+            width: 0;
+            height: 0;
+            border-left: 10px solid #fff;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+            margin: 0 10px;
+        }
+
+        #menu div .menuBar {
+            display: block;
+            height: 30px;
+            color: #fff;
+            background-color: black;
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        #menu div a {
+            display: block;
+            padding: 5px;
+            text-decoration: none;
+            /* 去掉字体下划线 */
+            border: 1px solid #ecefec;
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root">
+        <button id="button1">按钮1</button>
+        <button id="button2">按钮2</button>
+        <button id="button3">按钮3</button>
+        <button id="button4">按钮4</button>
+        <button id="button5">按钮5</button>
+        <button id="button6">按钮6</button>
+        <button id="button7">按钮7</button>
+        <button id="button8">按钮8</button>
+        <button id="button9">按钮9</button>
+        <button id="button10">按钮10</button>
+        <button id="button11">按钮11</button>
+        <button id="button12">按钮12</button>
+
+        <br />
+        <div id="others">
+            "others"标签中包含
+            <span>span标签</span>
+            <a href="#">a标签</a>
+        </div>
+
+        <input type="radio" name="gender" value="male" />男
+        <input type="radio" name="gender" value="female" />女
+
+        <div class="square" style="background-color: orange;"></div>
+        <div class="square" style="background-color: blue;"></div>
+        <div class="square" style="background-color: red;"></div>
+
+        <div id="info">
+            <p>
+                隐私条款
+
+                本游戏非常重视用户的隐私保护，因此制定了本涵盖如何收集、使用、披露、分享以及存储用户的信息的《隐私条款》。用户在使用我们的服务时，我们可能会收集和使用您的相关信息。我们希望通过本《隐私条款》向您说明，在使用我们的服务时，我们如何收集、使用、储存和分享这些信息，以及我们为您提供的访问、更新、控制和保护这些信息的方式。本《隐私条款》适用于用户与本游戏的交互行为以及用户注册和使用本游戏的服务，我们建议您仔细地阅读本政策，以帮助您了解维护自己隐私权的方式。
+
+                您使用或继续使用我们的服务，即表示您同意我们按照本《隐私条款》收集、使用、储存和分享您的相关信息。如对本《隐私条款》或相关事宜有任何问题，请进行留言。
+
+                一、我们可能收集的信息
+
+                我们提供服务时，可能会收集、储存和使用下列与您有关的信息。如果您不提供相关信息，可能无法注册成为我们的用户或无法享受我们提供的某些服务，或者无法达到相关服务拟达到的效果。
+
+                （一）您提供的信息
+
+                1、您在注册账户或使用我们的服务时，向我们提供的相关个人信息，例如电话号码、身份证明、电子邮件等；
+
+                2、如您使用我们的服务需与用户的银行账户或其他支付工具的账户关联方能实现时，您向我们提供您的银行账户信息或其他支付工具的账户信息；
+
+                3、您通过我们的服务向其他方提供的共享信息，以及您使用我们的服务时所储存的信息。
+
+                （二）其他方分享的您的信息
+
+                其他方使用我们的服务时所提供有关您的共享信息。
+
+                （三）我们获取的您的信息
+
+                1、您使用服务时我们可能收集如下信息:
+
+                （1）日志信息，指您使用我们的服务时，系统自动采集的技术信息，包括:
+
+                · 设备或软件信息，例如您的移动设备、网页浏览器或用于接入我们服务的其他程序所提供的配置信息、您的IP地址和移动设备所用的版本和设备识别码；
+
+                · 在使用我们服务时搜索或浏览的信息，例如您使用的网页搜索词语、访问的社交媒体页面url地址，以及您在使用我们服务时浏览或要求提供的其他信息和内容详情；
+
+                · 有关您曾使用的移动应用（APP）和其他软件的信息，以及您曾经使用该等移动应用和软件的信息；
+
+                · 您通过我们的服务进行通讯的信息，例如曾通讯的账号，以及通讯时间、数据和时长；
+
+                · 您通过我们的服务分享的内容所包含的信息（元数据），例如拍摄或上传的共享照片或录像的日期、时间或地点等。
+
+                （2）位置信息，指您开启设备定位功能并使用我们基于位置提供的相关服务时，收集的有关您位置的信息，包括:
+
+                您或其他用户提供的包含您所处地理位置的实时信息，例如您提供的账户信息中包含的您所在地区信息，您或其他人上传的显示您当前或曾经所处地理位置的共享信息，您或其他人共享的照片包含的地理标记信息；
+
+                您通过具有定位功能的移动设备使用我们的服务时，通过GPS或WiFi等方式收集的您的地理位置信息；
+
+                您可以通过关闭定位功能，停止对您的地理位置信息的收集。
+
+                二、我们如何使用您的信息
+
+                （一）我们可能将在向您提供服务的过程之中所收集的信息用作下列用途:
+
+                1、向您提供服务。在我们提供服务时，用于身份验证、客户服务、安全防范、诈骗监测、存档和备份用途，确保我们向您提供的产品和服务的安全性；
+
+                2、帮助我们设计新服务，改善我们现有服务；
+
+                3、使我们更加了解您如何接入和使用我们的服务，从而针对性地回应您的个性化需求，例如语言设定、位置设定、个性化的帮助服务和指示，或对您和其他用户作出其他方面的回应；
+
+                4、向您提供与您更加相关的广告以替代普遍投放的广告；
+
+                5、评估我们服务中的广告和其他促销及推广活动的效果，并加以改善；
+
+                6、软件认证或管理软件升级；
+
+                7、让您参与有关我们产品和服务的调查。
+
+                （二）为了让您有更好的体验、改善我们的服务或您同意的其他用途，在符合相关法律法规的前提下，我们可能将通过某一项服务所收集的信息，以汇集信息或者个性化的方式，用于我们的其他服务。例如，在您使用我们的一项服务时所收集的信息，可能在另一服务中用于向您提供特定内容，或向您展示与您相关的、非普遍推送的信息。如果我们在相关服务中提供了相应选项，您也可以授权我们将该服务所提供和储存的信息用于我们的其他服务。
+            </p>
+            <div id="checkbox">
+                <span>我已经阅读完毕</span>
+                <input type="checkbox" disabled="disabled" />
+            </div>
+        </div>
+        <div id="drag"></div>
+        <div id="scroll"></div>
+        <input id="key" type="text" value="" />
+        <div id="count"></div>
+        <div id="menu">
+            <div class="">
+                <span class="menuBar">腾讯游戏</span>
+                <a href="#">王者荣耀</a>
+                <a href="#">和平精英</a>
+                <a href="#">QQ飞车</a>
+                <a href="#">使命召唤</a>
+            </div>
+            <div class="collapsed">
+                <span class="menuBar">网易游戏</span>
+                <a href="#">阴阳师</a>
+                <a href="#">第五人格</a>
+                <a href="#">明日之后</a>
+                <a href="#">Sky光·遇</a>
+            </div>
+            <div class="collapsed">
+                <span class="menuBar">其他游戏</span>
+                <a href="#">4399</a>
+                <a href="#">7k7k</a>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    /*
+    *   DOM:
+    *   全称为"Document Object Model",使得用JavaScript对网页进行操作;
+    *   "Document":整个网页为一个文档;
+    *   "Object":页面中的每一个部分都为一个模型,也称节点,比如:"div"标签;
+    *   "Model":页面中的模型关系,也就是熟知的"DOM"树.
+    */
+
+    // "window.onload()":在页面加载完成后进行的操作
+    window.onload = function () {
+        console.log("页面加载完成");
+        // 获取文档根标签
+        console.log("文档根节点", document.documentElement);
+        // 获取"body"标签,不需要使用"getElementByTagName"获取
+        console.log("body标签", document.body);
+        // 获取页面的所有元素
+        console.log("页面中所有的元素", document.all);
+    }
+
+    // 注意在操作DOM之前需要等待页面加载完成,因此操作一般在"body"后.
+
+    var button1 = document.getElementById("button1");
+    button1.onclick = function () {
+        console.log("按钮1的文本", button1.innerHTML);
+        console.log("按钮1的文本", button1.innerText);
+        // "innerHTML"和"innerText"的区别
+        console.log("\"others\"的标签的文本", document.getElementById("others").innerHTML);
+        console.log("\"others\"的标签的文本", document.getElementById("others").innerText);
+    };
+
+    var button2 = document.getElementById("button2");
+    button2.onclick = function () {
+        var buttonList = document.getElementsByTagName("button");  // 可以使用通配符"*"获取所有元素
+        console.log("页面中所有\"button\"标签的元素");
+        // 遍历按钮数组
+        for (var i = 0; i < buttonList.length; i = i + 1) {
+            console.log(buttonList[i]);
+        }
+    };
+
+    var button3 = document.getElementById("button3");
+    button3.onclick = function () {
+        var buttonList = document.getElementsByName("gender");
+        console.log("页面中所有属性\"name=gender\"的元素,其value值");
+        // 遍历按钮数组,输出其"value"值
+        for (var i = 0; i < buttonList.length; i = i + 1) {
+            console.log(buttonList[i].value);
+        }
+    }
+
+    var button4 = document.getElementById("button4");
+    button4.onclick = function () {
+        var squareList = document.getElementsByClassName("square");
+        console.log("页面中所有属性\"class=square\"的元素");
+        // 遍历标签数组,输出其"class"值
+        for (var i = 0; i < squareList.length; i = i + 1) {
+            console.log(squareList[i], squareList[i].className);
+        }
+    };
+
+    var button5 = document.getElementById("button5");
+    button5.onclick = function () {
+        var rootNode = document.getElementById("root");
+        /*
+        *   获取标签的所有子元素
+        *   通过获取结果可知,
+        *   使用"childNodes"查询:浏览器会将DOM元素之间的空格当作文本节点进行获取,但是在IE8及以下的浏览器不会.
+        *   使用"children"查询:浏览器会查询我们所预期的节点.
+        */
+        console.log("\"id=root\"元素的所有子节点", rootNode.childNodes);
+        console.log("\"id=root\"元素的所有子节点", rootNode.children);
+    };
+
+    var button6 = document.getElementById("button6");
+    button6.onclick = function () {
+        var rootNode = document.getElementById("root");
+        // 获取第一个子元素,和上面的情况很相似,注意区分不同
+        console.log("\"id=root\"元素的第一个子节点", rootNode.firstChild);
+        console.log("\"id=root\"元素的第一个子节点", rootNode.firstElementChild);
+        // 获取最后一个子元素
+        console.log("\"id=root\"元素的最后一个子节点", rootNode.lastChild);
+        console.log("\"id=root\"元素的最后一个子节点", rootNode.lastElementChild);
+    };
+
+    // 注意一下都有类似的上面两种的情况,因此下面只写能够获取预期节点的方法
+
+    var button7 = document.getElementById("button7");
+    button7.onclick = function () {
+        console.log("\"id=button7\"元素的父节点", button7.parentElement);
+    }
+
+    var button8 = document.getElementById("button8");
+    button8.onclick = function () {
+        console.log("\"id=button8\"元素的前一个兄弟节点", button8.previousElementSibling);
+    }
+
+    var button9 = document.getElementById("button9");
+    button9.onclick = function () {
+        // 使用CSS选择器查询元素 
+        console.log("通过CSS选择器选择第一个按钮", document.querySelector("#root button"));
+        console.log("通过CSS选择器选择所有按钮", document.querySelectorAll("#root button"));
+    };
+
+    var button10 = document.getElementById("button10");
+    button10.onclick = function () {
+        var otherButton = document.createElement("button");
+        var buttonText = document.createTextNode("新增按钮");
+        // 将文本节点加入按钮节点
+        otherButton.appendChild(buttonText);
+        var rootNode = document.getElementById("root");
+        // 加入"root"节点
+        rootNode.appendChild(button10);
+        // 在指定节点前插入节点
+        document.getElementById("root").insertBefore(otherButton, document.getElementsByTagName("br")[0]);
+        // 类似API还有"replaceChild(), removeChild()",自己去试一试
+    }
+
+    /*
+    *   注意读取节点的样式,"style"只能够读取内联样式,无法读取样式表的样式,
+    *   而使用"currentStyle"可以读取正在生效的样式,但是方法仅在IE浏览器中支持,
+    *   那么在其他浏览器中可以使用"window.getComputedStyle(目标元素, null)"获取样式,但是在IE8及以下不支持,
+    *   如果需要兼容两者,可以通过判断浏览器类型或者判断是否存在"window.getComputedStyle()"函数.
+    */
+    // 注意如果需要修改大量的样式,性能会不好,因此可以使用另一个CSS类保存修改的样式,然后"element.className=修改样式后的类型"
+    var button11 = document.getElementById("button11");
+    button11.onclick = function () {
+        var squareList = document.getElementsByClassName("square");
+        for (var i = 0; i < squareList.length; i = i + 1) {
+            squareList[i].style.width = "100px";
+            squareList[i].style.height = "100px";
+            // 如果类似"background-color"等存在连字符的CSS属性,需要将其改为小驼峰命名法
+            console.log("此时\"square\"的样式", squareList[i].style);
+        }
+        /*
+        *   兼容IE8和其他浏览器
+        *   if(window.getComputedStyle) {
+        *       return window.getComputedStyle(node, null).name;
+        *   } else {
+        *       return node.currentStyle.name;
+        *   }
+        */
+    }
+
+    var button12 = document.getElementById("button12");
+    button12.onclick = function () {
+        var squareList = document.getElementsByClassName("square");
+        for (var i = 0; i < squareList.length; i = i + 1) {
+            console.log("此时\"square\"的样式-clientWidth-,clientHeight", squareList[i].clientWidth, squareList[i].clientHeight);
+            console.log("此时\"square\"的样式-offsetWidth-,offsetHeight", squareList[i].offsetWidth, squareList[i].offsetHeight);
+            // 两者返回不包含"px"的数值,可以直接计算,区别在于"clientWidth"不包括元素边框,另一个包含.
+        }
+    }
+    /*
+    *   "offsetParent":返回最近开启定位的祖先元素;
+    *   "offsetLeft/offsetTop":返回当前元素相对于定位元素的偏移量;
+    *   "scrollWidth/scrollHeight":返回元素滚动区域的长度;
+    *   "scrollLeft/scrollTop":返回滚动的距离;
+    */
+
+    // 当满足"scrollHeight - scrollTop == clientHeight"时,垂直滚动条在底部;
+    // 当满足"scrollWidth - scrollLeft == clientWidth"时,水平滚动条在右边.
+
+    var protocol = document.querySelector("#info p");
+    protocol.onscroll = function () {
+        if (protocol.scrollHeight - protocol.scrollTop == protocol.clientHeight) {
+            var checkbox = document.querySelector("#checkbox input");
+            checkbox.disabled = false;
+        }
+    };
+
+    /* 
+    *   事件:
+    *   1.浏览器将事件的详细信息都会传入"event"中,可以从中获取想要的信息
+    *   注意在IE8及以下的浏览器不会传入"event",而是将其保存在"window"中,可以通过类似"event = event || window.event"进行判断;
+    *   2.事件的冒泡在大多数情况都有意义,如果需要取消冒泡,可以通过"event.cancelBubble=true"进行取消;
+    *   3.事件的委派是在事件冒泡的基础之上实现的,后代元素触发事件时,可以冒泡到祖先元素上进行统一处理,从而减少绑定事件的次数;
+    *   4."event.target"表示触发事件的元素;
+    *   5.为元素绑定事件可以通过"element.事件名"或者"element.addEventListener(事件名,事件函数,是否在事件的捕获阶段进行触发)"进行绑定;
+    *   后者可以为相同事件绑定多个函数,在IE8及以下的浏览器使用"element.attachEvent(事件名,事件函数)"进行事件的绑定,但是"this"指向"window";
+    *   6.事件的三个阶段:(1)捕获阶段,不触发事件; (2)目标阶段:事件捕获到目标元素,触发事件; (3)冒泡阶段:事件从目标元素开始,向上冒泡;
+    *   IE8及以下的浏览器不存在捕获阶段;
+    */
+    var dragElement = document.getElementById("drag");
+    dragElement.onmousedown = function (event) {
+        event = event || window.event;
+        // 获取方块的偏移量
+        var offsetLeft = event.clientX - dragElement.offsetLeft;
+        var offsetTop = event.clientY - dragElement.offsetTop;
+        document.onmousemove = function (event) {
+            // 兼容所有浏览器获取事件
+            event = event || window.event;
+            // 获取鼠标的位置
+            var mouseX = event.clientX - offsetLeft;
+            var mouseY = event.clientY - offsetTop;
+            // 设置方块的偏移量
+            dragElement.style.left = mouseX + "px";
+            dragElement.style.top = mouseY + "px";
+        };
+        document.onmouseup = function () {
+            document.onmousemove = null;
+            document.onmouseup = null;  // 这一步无所谓
+        };
+        // "return false;"防止将元素拖到导航栏,浏览器进行搜索
+        return false;
+    };
+
+    var scrollElement = document.getElementById("scroll");
+    scrollElement.onmousewheel = function (event) {
+        // 获取滚动高度
+        var scrollHeight = event.wheelDelta;
+        // 修改高度
+        scrollElement.style.height = (scrollElement.clientHeight + scrollHeight / 24) + "px";
+        // "return false;"防止在滚动元素时整个页面也一起滚动
+        return false;
+    };
+
+    /* 
+    *   通过"event.keyCode"可以判断键盘上的某个键是否被按下,
+    *   如果使用了组合键,比如:"Ctrl","Alt","Shift",分别使用"event"中的"ctrlKey","altKey"和"shiftKey"进行判断
+    */
+    var keyElement = document.getElementById("key");
+    keyElement.onkeydown = function (event) {
+        if (event.keyCode == 65 && event.ctrlKey) {
+
+        }
+        // "return false;"会使得文本框不能够接受输入
+        // return false;
+    }
+
+    /*
+    *    BOM:通过其可以使得我们用JavaScript对浏览器进行操作;
+    *    BOM提供了以下几个全局对象,可以直接使用或者"window.对象:"访问:
+    *    1.Window:整个浏览器的窗口;
+    *    2.Navigator:浏览器的详细信息,通过其识别不同的浏览器,
+    *    其中存在一个非常重要的"userAgent"属性和"ajax"中出现的"ActiveXObject";
+    *    3.History:浏览器的历史记录,仅可以进行向前或者向后翻页且当次有效;
+    *    4.Screen:用户的屏幕信息;
+    *    5.Location:浏览器地址栏的信息.
+    */
+    console.log("Window对象", Window);
+    // "window"下的定时器
+    var index = 0;
+    var countElement = document.getElementById("count");
+    // 定时器会返回自己的唯一标识
+    var intervalTimerId = setInterval(function () {
+        count.innerText = index;
+        index = index + 1;
+        // 清楚定时器
+        if (index === 10) {
+            clearInterval(intervalTimerId);
+        }
+    }, 1000);  // 单位为ms
+
+    // 延时定时器
+    var timeOutTimerId = setTimeout(function () {
+        console.log("1");
+    }, 2000);
+    clearTimeout(timeOutTimerId);
+    // "window"下的本地存储(F12的"Application"查看)
+    // 浏览器在存储记录时,会自动调用对应的"toString()"方法
+    // 如果需要存储对象,需要转化为JSON字符串
+    window.localStorage.setItem("searchHistory", "搜索记录");
+    window.localStorage.setItem("userInfo", JSON.stringify({"name": "zhangsan"}));
+
+    console.log(window.localStorage.getItem("searchHistory"));
+    console.log(JSON.parse(window.localStorage.getItem("userInfo")));
+    window.localStorage.removeItem("userInfo");
+    window.localStorage.clear();
+    // "window"下的会话存储"sessionStorage"与本地存储的API相同
+    // 两者的不同点是关闭浏览器后,本地存储仍然存在,而会话存储会清空
+
+    console.log("Navigator对象", window.navigator);
+    // 存在"back()","forward()"和"go()"三个方法
+    console.log("History对象", window.history);
+    console.log("Screen对象", window.screen);
+    // "assign()"跳转到指定路径且生成历史记录,"reload(true)"重新加载网页,"true"表示不使用缓存刷新,"replace()"跳转指定页面但不会生成历史记录
+    console.log("Location对象", window.location);
+
+    // JSON对象
+    var json = '{"name": "zhangsan", "age": 18}';
+    var json_obj = { "name": "zhangsan", "age": 18 };
+    console.log("将JSON字符串转化为JavaScript对象", JSON.parse(json));
+    console.log("将JavaScript对象转化为JSON字符串", JSON.stringify(json_obj));
+    // "eval()"函数会执行字符串形式的JS代码,如果字符串中存在"{}"且不希望作为代码块,需要在外层加上括号
+    // 但是存在性能较差且存在安全隐患的特点
+    console.log("eval()函数执行结果", eval("(" + json + ")"));
+
+    // 相关类的操作
+    function addClass(element, className) {
+        // 判断是否存在类
+        if (!hasClass(element, className)) {
+            element.className += " " + className;  // 注意空格
+        }
+    }
+
+    function hasClass(element, className) {
+        // 创建正则表达式
+        var regEx = new RegExp("\\b" + className + "\\b");
+        return regEx.test(element.className);
+    }
+
+    function removeClass(element, className) {
+        // 创建正则表达式
+        var regEx = new RegExp("\\b" + className + "\\b", "");
+        element.className = element.className.replace(regEx, "");
+    }
+
+    function toggleClass(element, className) {
+        // 如果存在类,那么删除类
+        if (hasClass(element, className)) {
+            removeClass(element, className);
+        }
+        // 否则加入类
+        else {
+            addClass(element, className);
+        }
+    }
+
+    // 下拉菜单
+    var menuBarList = document.getElementsByClassName("menuBar");
+    var openMenuBar = menuBarList[0].parentElement;  // 保存打开的菜单元素
+    for (var i = 0; i < menuBarList.length; i = i + 1) {
+        menuBarList[i].onclick = function () {
+            var parentElement = this.parentElement;
+            toggleClass(parentElement, "collapsed");
+            // 关闭之前的菜单
+            /* 
+            *   判断条件说明:
+            *   1."parentElement != openMenuBar"防止点击正在打开的菜单出现的问题;
+            *   2."hasClass(openMenuBar, "collapsed")"是配合里面的"toggleClass(openMenuBar, "collapsed")"从而达到动画效果.
+            */
+            if (parentElement != openMenuBar && !hasClass(openMenuBar, "collapsed")) {
+                // 1 addClass(openMenuBar, "collapsed");
+                toggleClass(openMenuBar, "collapsed");
+                openMenuBar = parentElement;
+            }
+        };
+    }
+</script>
+
+</html>

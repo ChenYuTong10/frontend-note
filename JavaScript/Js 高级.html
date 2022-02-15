@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript高级</title>
+    <script type="text/javascript">
+        // 1."null"和"undefined"的区别
+        var a1;  // 此时"a1"就是为"undefined"
+        var a2 = null;  // 此时"a2"为"null"会被"JavaScript"的垃圾回收机制回收
+
+        // JavaScript中全局变量和局部变量存储在栈空间中,而对象存储在堆空间中;
+
+        var a3 = 1;  // "a3"存储的是数据"1"
+        var a4 = { "name": "zhangsan" };  // "a4"存储的是对象的地址
+        var a5 = a3;  // "a5"存储的是"a3"的内容,如果是数据,"a5"也是数据,如果是对象,"a5"是内存地址
+
+        // JavaScript中函数传值是值传递还是引用传递
+        function add(num) {
+            num = num + 1;
+        }
+        var a6 = 1;
+        add(a6);
+        console.log(a6);  // 1
+
+        function addObj(obj) {
+            obj.num = obj.num + 1;
+        }
+        var a7 = { "num": 1 };
+        addObj(a7);
+        console.log(a7.num);  // 2
+
+        /*
+        *   对象的注意事项:
+        *   1.属性名的类型为字符串,虽然允许不写引号,但是这不好;
+        *   2.当属性名存在特殊字符或者属性名为变量时,需要使用"object["key"] = value"的格式进行操作.
+        */
+        var a8 = {};
+        a8["content-type"] = "application/json";
+        var a9 = "Connection";
+        a8[a9] = "keep-alive";
+
+        /*
+        *   回调函数:
+        *   1.概念:由用户定义,但是没有显示调用却执行了的函数称为回调函数;
+        *   2.常见的回调函数:DOM事件回调函数, 定时器回调函数, ajax回调函数, 生命周期回调函数
+        */
+
+        /*
+        *   立即执行函数:其主要作用之一是向外界暴露变量或者函数等
+        */
+        // 注意如果这么写需要注意一下";"的问题
+        (function () {
+            var a10 = 100;
+            function sub() {
+                a10 = a10 - 1;
+                return a10;
+            };
+            window.public = function () {
+                return {
+                    "a10": a10,
+                    "sub": sub
+                };
+            }
+        })();
+
+        console.log(window.public().a10);
+        console.log(window.public().sub());
+
+        // 关于不同场景下的"this"指向:"this"总是指向调用函数的那个对象,对象可能是显示的对象或者隐式的对象window
+
+        function PrintThis() {
+            console.log(this);
+        }
+
+        PrintThis();  // window
+
+        var a11 = new PrintThis();  // a11
+
+        var object = { "name": "zhangsan" };
+        PrintThis.call(object);  // object
+
+
+        /*
+        *   函数中的"prototype":
+        *   1.除了"Object"函数自身,每个函数都存在一个属性"prototype",称为显示原型属性,
+        *   默认为Object空对象,在函数创建时加入属性"prototype";
+        *   2."prototype"中的"constructor"指向函数对象本身;
+        *   3.每个实例对象(将函数作为构造函数)都存在"__proto__",称为隐性原型属性,其与函数的"prototype"相同;
+        */
+        function Fun() { };
+        console.log("Fun函数的prototype属性", Fun.prototype);
+        var fun = new Fun();
+        console.log("fun对象的__proto__属性", fun.__proto__);
+
+        /*
+        *    原型链:需要访问对象的属性时,会根据以下步骤进行寻找
+        *    1.在对象自身的属性中寻找指定的属性;
+        *    2.根据对象的"__proto__"属性,在"object"对象中寻找指定属性;
+        *    3.根据"object"对象的"__proto__"属性,也就是"Object()"的"prototype"属性中寻找指定属性;
+        *    4.如果仍然没有找到指定属性,返回"undefined".
+        */
+
+        // 一般情况下,属性会通过构造函数定义在对象本身,而方法会定义在函数原型"prototype"上
+        // "A instance of B" 判断的原理为B的原型对象是否在A的原型链上
+
+        // 作用域的提升
+        // 使用"var"声明的变量,在前面就可以访问,但是其值为"undefined"
+        // 而函数无论在声明前后,都可以被调用,但是注意下面的例子:
+
+        // a12();  // 这是不行的,这属于变量而不是函数
+        // var a12 = function() {
+        //     console.log(1)
+        // };
+
+        /*
+        *   1.全局执行上下文:在执行全局代码,即:script标签中的代码前,"window"会被作为全局执行上下文对象,对代码进行预编译;
+        *       (1)将"var"声明的变量添加到"window"属性中,其值为"undefined";
+        *       (2)将"function"声明的函数添加到"window"方法中;
+        *       (3)将"this"指针指向"window"对象.
+        *   2.函数执行上下文:在执行函数代码前,会创建函数执行上下文对象,同样对函数中的代码进行预编译:
+        *       (1)将实参赋值给形参,同时添加到函数执行上下文对象的属性中;
+        *       (2)将所有传入的参数存储在"arguments"中,添加到属性中;
+        *       (3)将"var"声明的变量添加到对象的属性值,其值为"undefined";
+        *       (4)将"function"声明的函数添加到对象的方法中;
+        *       (5)将"this"指针指向调用函数的对象.
+        */
+
+        // 执行上下栈与C++类似,调用函数时将函数执行上下文对象压入栈,函数执行完毕出栈,注意一下,在所有代码执行完毕后,栈内仍然剩下"window"对象
+
+        //闭包:产生闭包的条件:当内部函数引用了外部函数的变量时,产生闭包
+        function a13() {
+            var a14 = 1;
+            function a15() {
+                console.log(a14);  // 产生闭包
+            }
+        }
+
+        // 常见的闭包类型
+        function a16() {
+            var a17 = 1;
+            function a18() {
+                a17++;
+                console.log(a17);
+            }
+            return a18;
+        }
+        var f = a16();
+        f()  // 输出"2"
+        f()  // 输出"3"
+
+        function a19(message, time) {
+            setTimeout(function () {
+                console.log(message);
+            }, time);  // 属于不经意间的闭包
+        }
+
+        // 闭包的作用
+
+        function Person() {
+            var name;  // "name"会在"window"对象中
+
+            function getName() {
+                return this.name;
+            }
+            function setName(name) {
+                this.name = name;
+            }
+
+            return { getName, setName };
+        }
+
+        var person = Person();
+        person.setName("zhangsan");
+        console.log(person.name);  // "zhangsan"
+        console.log(person.getName());  // "zhangsan"
+
+        // 闭包的缺点:如果需要延长生命周期和作用域,那么闭包是好的,反过来,不需要却仍然使用闭包,会导致内存无法释放,导致内存泄漏
+        // 注意的是,内存泄漏的地方不仅仅在闭包,还有未被及时清理的定时器,全局变量等地方
+        person = null;  // 释放闭包占用的内存
+
+        /*
+        *   1.通过上面的例子,执行完176行的代码时,按理"name"变量会被释放,但是从结果看并没有,因此,闭包的作用之一为延长变量生命周期和作用域;
+        *   2.由于"person"变量接受了函数的返回值,因此"getName"和"setName"函数所在的空间并不会被释放回收,而内部的"getName"和"setName"局部函数被释放;
+        *   3.通过上面的例子,发现在函数外部可以操作函数内部的变量"name",因此,闭包的作用之一为提供在函数外部操作函数内部的变量;
+        *   4.从上面的例子可以看出,JavaScript中的闭包有点像其他语言中的"类",在JavaScript中称为模块.
+        */
+
+        // 创建对象的方法
+
+        // 动态赋值:语句太多
+        var object1 = new Object();
+        object1.name = "zhangsan";
+        object1.setName = function(name) {
+            this.name = name;
+        };
+
+        // 字面量赋值:存在重复的代码
+        var object2 = {
+            name: "zhangsan",
+            setName: function(name) {
+                this.name = name;
+            }
+        };
+        var object3 = {
+            name: "lisi",
+            setName: function(name) {
+                this.name = name;
+            }
+        };
+
+        // 工厂方法:没有确定的类型,创建的对象都是"Object"类型
+        function CreateObject(name) {
+            return {
+                name: name,
+                setName: function(name) {
+                    this.name = name;
+                }
+            };
+        }
+        var object4 = CreateObject("zhangsan");
+        var object5 = CreateObject("lisi");
+
+        // 构造方法
+        function Food(name) {
+            this.name = name;
+            // 不同对象中存在相同的数据,但是占用了不同的空间,因此需要将相同的部分放在"prototype"中
+            Food.prototype.setName = function(name) {
+                this.name = name;
+            };
+        }
+        var object6 = new Food("apple");
+
+        // JavaScript中的继承
+        // 类比普通函数能够看见"Object"中的方法,因为其"prototype"属性为"Object"的实例对象
+        // 那么如果希望实现继承,那么只需要将子类的"prototype"属性变成父类的实例对象,即:手动延长原型链.
+        function Father() {
+            this.name = "Father's name";
+            Father.prototype.showFatherName = function() {
+                console.log(this.name);
+            }
+        }
+        function Son() {
+            Father.call(this);  // 为了获取父类的属性(假继承),像"super()"调用父类构造函数
+            this.age = 18;
+        }
+        Son.prototype = new Father();  // 为了能够获取父类的方法(真正实现继承)
+        Son.prototype.constructor = Son;  // 修正子类的构造函数
+        Son.prototype.showSonName = function() {
+            console.log(this.sName);
+        };
+
+        var son = new Son();
+        son.showFatherName();
+
+        // 浏览器内核
+        // 目前主流的内核有:Chrome,Safari的"Webkit"内核,Firefox的"Gecko"内核,IE的"Trident"内核;
+        // 其他的浏览器仅仅是在上面的内核进行包装和结合,为了兼容各自的业务或者应用场景.
+        /*
+        *   浏览器内核的模块(主线程):
+        *   1.JavaScript引擎:负责JS的编译和运行;
+        *   2.HTML和CSS文档的解析模块:负责HTML和CSS文件的解析;
+        *   3.DOM树的处理模块:负责DOM树相关处理,比如将标签生成标签树,样式生成样式树,将两者结合生成DOM树;
+        *   4.布局和渲染模块:根据DOM树对页面进行布局和渲染;
+        *   浏览器内核的模块(分线程):
+        *   1.定时器管理模块; 2.事件响应模块; 3.网络请求模块.
+        */
+
+        // JavaScript是单线程运行的,但是可以实现多线程
+        // 验证单线程
+        setTimeout(function() {       // JavaScript引擎会先执行普通代码(同步代码),在执行特殊的代码(异步代码)
+            console.log("定时器0");   // 特殊的代码包括定时器,绑定监听器和发送请求等代码,
+        }, 0);                       // 因此"定时器0"会在"alert()执行后"后输出.
+        setTimeout(function() {
+            console.log("定时器1");
+        }, 1000);
+        setTimeout(function() {
+            console.log("定时器2");
+        }, 2000);
+        console.log("alert()执行前");
+        alert("alert()函数执行时");  // alert()函数执行时,会停止主线程的计时,因此定时器不会输出
+        console.log("alert()执行后");
+
+        // 为什么JS是单线程?
+        // 比如:对元素的创建和删除,如果是多线程,那么可能会在创建的同时,删除元素,
+        // 然而元素可能并没有完全创建完毕,因此可能会出现错误.
+
+        // 事件循环模型
+        // JS引擎会先执行同步代码,执行的过程中会将回调函数交给浏览器对应的模块;
+        // 如果此时的异步代码需要执行,会将其加入异步队列中,等待同步代码执行完毕后再依次执行(事件轮询);
+        // 这个异步队列也称为"任务队列","消息队列","事件队列".
+
+        // JavaScript的多线程实现:Web Workers
+        var worker = new Worker("worker.js");  // "worker.js"是分线程执行的地方
+        worker.onmessage = function(event) {  // 绑定接受消息的监听事件
+            console.log(event);
+        }
+        worker.postMessage("hello, sub thread!");  // 向分线程发送数据
+        // 分线程的"this"不是"window",因此分线程无法对页面进行更新
+        // 同时不是所有浏览器都支持该属性,不支持跨域执行JavaScript代码
+    </script>
+</head>
+
+<body>
+    <div id="root"></div>
+</body>
+
+</html>

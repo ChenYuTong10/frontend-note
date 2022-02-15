@@ -1,0 +1,351 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>盒子模型</title>
+		<style type="text/css">
+		.Point_1
+		{
+		width:200px;
+		height:200px;
+		background-color:#bfa;
+		border-width:20px;
+		border-color:red orange yellow blue;
+		border-style:solid;
+		padding:100px;
+		margin-bottom:100px;
+		}
+		.Point_2
+		{
+		width:100%;
+		height:100%;
+		background-color:yellow;
+		}
+		.Point_3
+		{
+		width:200px;
+		height:200px;
+		background-color:yellow;
+		border-width:20px;
+		border-color:red orange green blue;
+		border-style:solid;
+		margin-left:auto;
+		margin-right:auto;
+		}
+		.Point_4
+		{
+		width:200px;
+		height:200px;
+		background-color:#acd;
+		}
+		.Point_5
+		{
+		width:100px;
+		height:100px;
+		background-color:#fda;
+		margin-top:50px;
+		}
+		*
+		{
+		padding:0px;
+		margin:0px;
+		}
+		.Point_6
+		{
+		display:block;
+		width:100px;
+		height:100px;
+		line-height:100px;
+		background-color:#7af;
+		}
+		.Point_7
+		{
+		background-color:orange;
+		padding-left:100px;
+		}
+		.Point_8
+		{
+		/*float:left;*/
+		width:100px;
+		height:100px;
+		background-color:yellow;
+		}
+		.Point_9
+		{
+		/*float:left;*/
+		width:100px;
+		height:100px;
+		background-color:#bfa;
+		}
+		.Point_10
+		{
+		/*float:left;*/
+		width:100px;
+		height:100px;
+		background-color:red;;
+		}
+		.Point_11
+		{
+		border:yellow 20px solid;
+		overflow:auto;
+		}
+		.Point_12
+		{
+		width:100px;
+		height:100px;
+		background-color:#bfa;
+		float:left;
+		}
+		.Point_13
+		{
+		width:100px;
+		height:100px;
+		background-color:blue;
+		}
+		/*解决高度塌陷问题的最终方案*/
+		.The_Solution_About_Height_Of_Collapse:after
+		{
+		content:"";
+		/*"display"属性的属性值也可以是"table"*/
+		display:block;
+		clear:both;
+		/*兼容IE6及以下的浏览器*/
+		zoom:1;
+		}
+		/*解决外边距重叠的最终方案*/
+		.The_Solution_About_Margin_Overlap:before
+		{
+		content:"";
+		display:table;
+		}
+		/*同时解决高度塌陷和外边距重叠问题的完美方案*/
+		.Clearfix:before,.Clearfix:after
+		{
+		content:"";
+		display:table;
+		clear:both;
+		/*兼容IE6及以下的浏览器*/
+		zoom:1;
+		}
+		</style>
+	</head>
+	<body>
+		<!--盒子模型：在使用CSS对页面进行排版布局时，我们将每一个元素想象成"不可见"的规则盒子（比如：文字在"框"中就是盒子模型的体现）;
+				【属性】：（由内到外）
+					a.content（内容区）：盒子的内部空间中存放元素的区域;
+						【属性】：
+							1.width：设置内容区的宽度;
+							2.height：设置内容区的高度;
+					b.padding（内边距）：盒子中内容区与边框的距离;
+						【属性】：
+							1.padding-top/bottom/left/right:可以设置特定方向的内边距;
+							2.padding:可以同时设置四个方向的内边距;
+							【格式】：
+							(I)padding:（所有内边距）;
+							(II)padding:（上，下内边距） （左，右内边距）;
+							(III)padding:（上内边距） （左，右内边距） （下内边距）;
+							(IV)padding:（上内边距） （右内边距） （下内边距） （左内边距）;
+							(V)padding-top/bottom/left/right:（样式）;
+						【注意事项】：除了子元素的背景，子元素的所有属性默认处于父元素的内容区中，不会延伸至内边距区域.
+					c.border（边框）
+						【属性】：（必须设置以下三种属性）
+							1.border-width：可以设置边框的宽（厚）度;
+							2.border-color：可以设置边框的颜色;
+							3.border-style：可以设置边框的样式;
+								【可选属性值】：
+								(I)none：浏览器默认值，不设置任何边框;
+								(II)solid：设置实线边框;
+								(III)dashed：设置虚线边框;
+								(IV)double：设置双线边框;
+								(V)dotted：设置点状边框;
+							【注意事项】：以上三个属性除了"border-style"以外，都拥有默认值，因此，这三个属性中"border-style"必须设置属性值，而其它两个可以不用.
+							4.border：可以同时设置四个边框的宽度，颜色和样式，没有任何的顺序要求;
+							5.border-top/bottom/left/right：可以设置特定的边框的宽度，颜色和样式，没有任何的顺序要求;
+								【小技巧】：如果想对任意三个边框设置相同的宽度，颜色和样式，而另外一个边框不设置任何样式，则可以使用以下两种方法（以右边框为例）：
+									a.border-top:orange 10px solid; border-bottom:orange 10px solid; border-left:orange 10px solid;
+									b.border:orange 10px solid;border-right:none;（推荐）
+							【格式】：
+							(I)border-width/color/style:（所有边框）;
+							(II)border-width/color/style:（上，下边框） （左，右边框）;
+							(III)border-width/color/style:（上边框） （左，右边框） （下边框）;
+							(IV)border-width/color/style:（上边框） （右边框） （下边框） （左边框）;
+							(V)border-top/bottom/left/right-width/color/style:（样式）;
+							6.border-spacing：可以设置元素与其子元素边框之间的距离;
+							7.border-collapse：可以设置元素与其子元素的边框合并;
+								【注意事项】：当元素设置了"border-collapse"属性时，"border-spacing"属性失效.
+					d.margin（外边距）：盒子与盒子之间的距离.
+						【属性】：
+							1.margin-top/bottom/left/right:可以设置特定方向的外边距;
+								【可选属性值】：
+									(i)正值; (ii)负值：其表现效果为元素向反方向移动;
+									(iii)auto：在水平方向上设置auto，则会设置为相应外边距的最大值;在垂直方向上设置auto，则会设置为0;
+										【小技巧】：将元素水平居中的方法:a.使用HTML中的"center"标签; b.使用CSS中的"margin-left"和"margin-right"，并将其属性值设置为auto.
+							2.margin：可以同时设置四个方向的外边距;
+							【格式】：
+							(I)margin:（所有外边距）;
+							(II)margin:（上，下外边距） （左，右外边距）;
+							(III)margin:（上外边距） （左，右外边距） （下外边距）;
+							(IV)margin:（上外边距） （右外边距） （下外边距） （左外边距）;
+							(V)margin-top/bottom/left/right:（样式）;
+							【注意事项】：
+								(1)页面中的每一个元素默认靠左，靠上放置，因此：
+									a.当设置左外边距和上外边距时，影响的是当前元素的位置;
+									b.当设置右外边距和下外边距时，影响的是其他元素的位置;
+								(2)页面中相邻的兄弟元素在垂直方向上的外边距会发生重叠，其最终表现效果为相邻外边距中的最大值而不是相邻外边距之和;
+								(3)页面中相邻的父子元素在垂直方向上的外边距也会发生重叠，其最终表现效果为子元素的外边距会赋予父元素的外边距;
+									【解决方法】：解决(2)(3)的方法本质上是想办法将两者重叠的外边距变成"不重叠"，比如：插入其他元素，设置边框，设置内边距（注意会改变盒子的可见大小）;	
+					【注意事项】：
+						1.CSS中的width和height设置的是内容区的宽和高，而盒子的大小是由内容区，内边距和边框三个部分决定的，因此，width和height并不是盒子的大小;
+							盒子大小 = 内容区大小 + 内边距 + 边框的宽（厚）度.
+						2.内联元素的盒子模型：
+							【区别】：
+								a.不能通过直接设置"width"和"height"来改变内容区的大小，而是需要使用"display"来间接设置;
+								b.可以设置内边距，边框和水平方向上的外边距（不会发生水平外边距的重叠）;
+								c.垂直方向上的内边距和边框不会影响页面的布局，而是会覆盖在其他元素的上一层.
+						3.由于子元素默认在父元素的内容区中，理论上子元素的大小最大为父元素内容区的大小，实际上子元素的大小可以超出父元素内容区的大小;
+							可以使用"overflow"样式处理子元素溢出的内容:
+								【可选属性值】：
+									a.visible：默认值，对子元素溢出的内容不做任何处理，溢出的内容将在父元素内容区以外的位置显示;
+									b.hidden：对子元素溢出的内容进行修减处理，处理后溢出的内容将不再显示;
+									c.scroll：对父元素添加水平和垂直两个方向的滚动条，子元素中的内容（无论是否溢出）可以通过拖动滚动条查看;
+									d.auto：根据子元素中的内容是否水平或垂直溢出，自动为父元素添加水平或垂直滚动条.
+						4.当元素的"width"的属性值为"auto"时，对该元素设置内边距不会影响盒子的可见大小，而是自动修改"width"的值，使其符合内边距.
+							比如："class"属性值为"Point_7"的"div"元素，由于加入了100px的左内边距，此时盒子的"width"不再是父元素的100%，而是自动修改为"父元素的100% - 100px".
+		-->
+		<div class="Point_1">
+			<div class="Point_2"></div>
+		</div>
+		<div class="Point_3"></div>
+		
+		<div class="Point_4 Clearfix">
+			<div class="Point_5"></div>
+		</div>
+		
+		<!--浏览器的默认样式：在没有设置任何样式的情况下，为了能够有比较好的显示效果，浏览器会给予元素设置默认的外边距和内边距;
+				【注意事项】：查看元素的盒子模型时，有可能会发现并不是该元素拥有默认的外边距和内边距，那么可能是其父元素拥有.
+				【解决方法】：使用通配选择器(*)将所有元素的外边距和内边距设置为0px.
+		-->
+		
+		<!--display样式：可以修改元素的类型；
+				【可选属性值】：
+					1.inline：将元素作为内联元素显示;
+					2.block：将元素作为块元素显示;
+					3.inline-block：将元素作为行内块元素（可以直接设置"width"和"height"，但是不会像块元素独占一行）显示;
+					4.none：将元素"隐形"，不显示元素，同时不会占据任何位置;
+					5.table：将元素作为表格元素显示.
+		-->
+		<a href="#" class="Point_6">Click here!</a>
+		
+		<!--visibility样式：可以设置元素的隐藏和显示的状态;
+				【可选属性值】：
+					1.visible：默认值，元素在页面中正常显示;
+					2.hidden：将元素"隐形"，不显示元素，但是会占据相应的位置.
+		-->
+		
+		<!--文档：指的是整个网页;
+			文档流：指的是网页的最底层，创建的元素默认在文档流中;
+			两类元素的特点：
+				1.块元素：
+					a.块元素在文档流中默认会独占一行，自上而下排列;
+					b.块元素在文档流中默认宽度是父元素的100%，默认高度是子元素的高度;
+					c.块元素浮动后，其宽度和高度是子元素的宽度和高度.
+				2.内联元素：
+					a.内联元素在文档流中默认只占自身大小，从左向右排列，如果一行不能容纳所有的内联元素，则自动换到下一行;
+					b.内联元素在文档流中默认宽度和高度是子元素的宽度和高度;
+					c.内联元素浮动后，内联元素即为块元素，比如：可以直接通过"width"和"height"设置内容区的大小.
+		-->
+		<div class="Point_7">2021年是个充满希望的一年!</div>
+		
+		<!--浮动：通过"float"使元素浮动;
+			【可选属性值】：
+				1.none：默认值，元素在文档流中排列;
+				2.left：元素脱离文档流并向页面的左（上）侧浮动;
+				3.right：元素脱离文档流并向页面的右（上）侧浮动;
+			【注意事项】：
+				1.浮动元素不会超过其父元素的内容区边界或其浮动的兄弟元素区域;
+				2.如果浮动元素上方有处于文档流的块元素，则浮动元素不会超过该块元素;
+				3.如果页面中一行无法容纳所有的浮动元素，浮动元素会自动换行;
+				4.浮动元素不会覆盖文字，文字会自动环绕在浮动元素的周围，即：文字环绕;
+				5.如果想"改变"上述注意事项，只能寄希望于改变代码的结构.
+		-->
+		
+		<!--clear样式：可以清除浮动元素对当前元素的影响;
+				【可选属性值】：
+					1.none：默认值，不清除浮动元素对当前元素的影响;
+					2.left：清除左侧浮动元素对当前元素的影响;
+					3.right：清除右侧浮动元素对当前元素的影响;
+					4.both：清除两侧浮动元素对当前元素（最大）的影响.
+		-->
+		
+		<!--若想将块元素从左向右排列，可以使用以下两种方法:
+			1.使用"float"使元素浮动;（推荐）
+			2.使用"display"样式并将其属性值设置为"inline-block".
+		-->
+		<div class="Point_8"></div>
+		<div class="Point_9"></div>
+		<div class="Point_10"></div>
+		
+		<!--zoom样式：可以设置元素放大的倍数;
+				【注意事项】：该样式只有在IE浏览器中支持，其他浏览器中不支持.
+		-->
+		
+		<!--Block Formatting Context：简称"BFC"，根据"World Wide Web Consortium"的标准，每一个元素都有这个隐藏的默认关闭的属性;
+				(i)开启"BFC"属性后，元素将有以下特点：
+					1.元素的垂直外边距不会与其子元素的重叠;
+					2.元素不会被浮动元素覆盖;
+					3.元素可以包含其浮动的子元素.
+				(ii)开启"BFC"属性的方法：无直接方法，只能通过下列方法间接开启"BFC";
+					1.设置元素浮动;	2.设置元素绝对定位;	3.设置元素"display"的属性值为“inline-block”;
+					4.设置元素"overflow"的属性值为非"visible"的值.
+			【注意事项】:IE6及以下浏览器不支持该属性，但是IE6及以下浏览器具有功能类似的属性——"hasLayout";
+						其间接开启"hasLayout"的方法为：设置元素"zoom"的属性值或"width".
+		-->
+		
+		<!--高度塌陷问题：当父元素的默认高度为子元素的高度时，若为子元素设置浮动，则会导致高度塌陷的问题，进而引起页面布局混乱;
+				【解决方法】：
+					1.为父元素设置确切的高度;		【不推荐】：若父元素的高度确定，则其不能自动适应子元素的高度;
+					2.为父元素开启BFC属性或hasLayout属性（IE6及以下浏览器）;
+						【不推荐】：使用开启"BFC"的1,2方法会导致父元素宽度丢失，下面的元素仍然会上移，而3方法虽然可以避免下面元素上移，但是也会使父元素宽度丢失;
+									使用4方法并设置为"scroll"尽管可以几乎完美地避免上述地问题，但是会有多余的滚动条;
+						【推荐】:使用4方法并设置为"hidden"或"auto"或"1"（IE6及以下浏览器）.
+					3.为子元素创造兄弟元素，并使用"clear"清除浮动的子元素对其的影响;
+						【推荐】：虽然使用了HTML创造了兄弟元素，在页面中添加了一个多余的结构，但是可以兼容包括IE6及以下浏览器的所有浏览器;
+						【改进】：使用CSS创造兄弟元素，即：使用伪类":after"并配合"display"变成块元素（"table"标签也是块元素），最后在使用"clear"清除浮动的影响（IE6及以下的浏览器不支持伪类":after"）.
+		-->
+		<div class="Point_11 Clearfix">
+				<div class="Point_12"></div>
+		</div>
+		<div class="Point_13"></div>
+		
+		<!--定位：通过"position"可以将某一元素摆放在页面中的任意位置;
+				【可选属性值】：
+					1.static：默认值，元素没有开启定位;
+					2.relative：元素开启相对定位（相对于元素在文档流中位置）;
+						【注意事项】：
+							a.若开启元素的相对定位，而不设置任何方向的偏移量，那么元素位置不会发生任何变化;
+							b.开启相对定位的元素不会脱离文档流，即：元素的性质不变;
+							c.元素开启相对定位后，层级会相应地提高一级（可能会导致开启相对定位的元素会覆盖在没有开启相对定位元素的上方）;
+					3.absolute && fixed（固定定位）：元素开启绝对定位;
+						【注意事项】：
+							a.若开启元素的绝对定位，而不设置任何方向的偏移量，那么元素位置不会发生任何变化;
+							b.开启绝对定位的元素会脱离文档流，即：元素的性质发生改变;
+							c.若设置绝对定位中的"absolute"，则其相对于最近的开启了相对定位的祖先元素;（一般情况下，开启子元素绝对定位的同时会开启其父元素的相对定位）
+							若所有祖先元素都没有开启相对定位，则相对于浏览器窗口的位置，但是当页面进行滚动时，元素不会永远相对于浏览器窗口的位置;
+							d.若设置绝对定位中的"fixed"，即使页面进行滚动，元素永远相对于浏览器窗口的位置（IE6及以下浏览器不支持该属性值）;
+							e.元素开启绝对定位后，层级会相应地提高一级（可能会导致开启绝对定位的元素会覆盖在没有开启绝对定位元素的上方）.
+				【注意事项】：若元素的层级相同，则结构上处于下方的元素会覆盖在处于上方的元素.
+				【格式】：当开启元素的定位，即："position"的属性值为非"static"时，可以通过"left/right/top/bottom"四个属性（只需要使用到两个方向上的偏移量）设置元素相对于定位位置的偏移量;
+		-->
+		
+		<!--z-index属性：若元素开启了定位，则可以通过其设置元素的层级;
+				【概述】：通过指定任意正整数作为"z-index"的属性值，正整数越大，层级越高，在页面中越优先显示;
+				【注意事项】：若两个元素的关系为父子元素，那么无论父元素的层级多高，也不会覆盖子元素.
+		-->
+		
+		<!--opacity属性：可以设置元素的透明背景;
+				【概述】：通过指定"0~1"之间任意的实数作为"opacity"的属性值，"0"为完全透明，"1"为完全不透明;
+				【注意事项】：该属性在IE8及其以下的浏览器不支持，因此需要使用"alpha(opacity=（透明度）)"达到透明的效果（在IE6的"Tester"中无法实现，但是实际上IE6是可以实现的）;;
+							透明度是"0~100"之间的任意正整数，"0"为完全透明，"1"为完全不透明.
+		-->
+	</body>
+</html>
