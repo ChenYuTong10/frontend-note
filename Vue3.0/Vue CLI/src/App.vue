@@ -258,6 +258,17 @@ export default {
 
     // "defineAsyncComponent"异步引入组件,需要搭配"Suspense"标签
     // const child = defineAsyncComponent(()=>import("../xxx/xxx"));
+    
+    // "defineProps"和"defineEmits"
+    // const props = defineProps({
+    //  username: {
+    //    type: String,
+    //    default: 'zhangsan'
+    //  },
+    // });
+    // 
+    // const emit = defineEmits(['myEvent']);
+    // emit('myEvent', 'zhangsan');
 
     return {
       name,
