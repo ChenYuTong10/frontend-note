@@ -13,10 +13,13 @@ export const router = createRouter({
             component: Home
         },
         {
-            // "params"传参多面向访问资源
+            // "params"传参多面向访问资源,而且需要与目的组件的"name"结合
             path: '/about/:id/:name',
             name: 'About',
             component: About
         }
     ]
 });
+
+// 在"Vue3"访问"router"和"route"的方法
+// "Vue3"官方的提供了分别提供了"useRouter"和"useRoute"方法获取"router"和"route"对象
