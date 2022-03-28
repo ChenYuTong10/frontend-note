@@ -491,6 +491,11 @@
     console.log("Navigator对象", window.navigator);
     // 存在"back()","forward()"和"go()"三个方法
     console.log("History对象", window.history);
+    // 新增两个方法:"pushState(data, title, target)"和"replaceState(data, title, target)"
+    // 类似"vue-router"中的"push"和"replace"方法
+    window.history.pushState(null, null, `time=${Date.parse(new Date())}`);
+    window.history.replaceState(null, null, "https://www.baidu.com");
+    
     console.log("Screen对象", window.screen);
     // "assign()"跳转到指定路径且生成历史记录,"reload(true)"重新加载网页,"true"表示不使用缓存刷新,"replace()"跳转指定页面但不会生成历史记录
     console.log("Location对象", window.location);
