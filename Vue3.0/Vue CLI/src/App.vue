@@ -70,7 +70,7 @@ export default {
   name: "App",
   // "Vue2"中的"data","methods"和"computed"等在"Vue3"都写在"setup"函数中
   // 但是"Vue3"兼容"Vue2"中的写法,也可以写"data"和"methods"配置项
-  emits: [],
+  emits: ["upload"],
   // "setup"函数在"beforeCreate"生命周期函数之前,不能使用"this"
   setup: function (props, context) {
     // "props"是"Vue2"中父向子组件传递的属性,在"Vue3"中相同
@@ -267,8 +267,12 @@ export default {
     //  },
     // });
     // 
+    // 仅能在"srcipt-setup"中使用
     // const emit = defineEmits(['myEvent']);
     // emit('myEvent', 'zhangsan');
+    // 
+    // 需要在"emits"中定义一下事件名称
+    // context.emit('upload', "image");
 
     return {
       name,
