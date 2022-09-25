@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React</title>
+    <!-- react.development.js 需要在 react-dom.development.js 文件前引入 -->
+    <!-- <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script> -->
+    <!-- <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script> -->
+    <!-- React最新版本 -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- 将 JSX 转化为 JS -->
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <!-- 对组件的属性进行限制的文件 -->
+    <script src="https://unpkg.com/prop-types@15.6/prop-types.js"></script>
+    <style>
+        .foo
+        {
+            background-color: orange;
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+    <!-- JSX Usage: 全称为JavaScript XML -->
+    <script type="text/babel">
+        const id = 123456;
+        const name = "Tome";
+        // 换行需要在外层加入括号, 且只能有一个根元素
+        // const vdom = (
+        //     <h1 
+        //         id={id} 
+        //         className="foo"
+        //         style={{color: "#fff", fontSize: "20px"}}
+        //     >Hello, React and {name}</h1>
+        // );
+        // ReactDOM.render(vdom, document.querySelector("#app"));
+        
+        // 函数式组件
+        // 外部传入的props会被收集为一个对象, 并传入函数
+        // 同理如果需要对传入的props进行限制, 需要写对应的propTypes和defaultProps
+        // function MyComponent(props) {
+        //     // useState Hook
+        //     const [state, setState] = useState(initialValue); // state的初始值
+        //     setState(newValue);
+        //     setState(value => newValue);
+
+        //     // useEffect Hook
+        //     React.useEffect(() => {
+        //          // 第二个参数是需要监听的状态
+        //          // 当传入空数组时, 相当于 componentDidMount 生命周期函数
+        //          // 当传入非空数组时, 相当于 componentDidUpdate 生命周期函数
+        //          // 当不传入时, 监听 componentDidMount 和 componentDidUpdate
+        //          // 该函数的返回值为 componentWillUnMount 生命周期函数
+        //          return () => {};
+        //     }, []);
+        //
+        //     // useRef Hook
+        //     const myRef = React.useRef();
+        //
+        //     // this是undefined, 严格模式下不允许指向window
+        //     return <div>This is my component</div>
+        // }
+        // ReactDOM.render(<MyComponent />, document.querySelector("#app"));
+
+        // 类式组件
+        // React会自动new一个MyComponent对象, 并调用render函数返回虚拟DOM
+        // class MyComponent extends React.Component {
+        //     render() {
+        //         // this是组件的实例对象
+        //         return (
+        //             <div>This is my component</div>
+        //         );
+        //     }
+        // }
+        // ReactDOM.render(<MyComponent />, document.querySelector("#app"));
+
+        // 类式组件的state
+        // class MyComponent extends React.Component {
+        //     constructor(props) {
+        //         super(props);
+        //         // 初始化状态, 类似Vue中的data
+        //         this.state = { name: "Tome" };
+        //         this.changeName = this.changeName.bind(this);
+        //     }
+
+        //     changeName() {
+        //         // 状态不可以直接更改, 类似于Vue中更改非响应式数据, 页面不会刷新的道理一样
+        //         // 需要通过setState函数进行状态更改, 与原来的state对象进行合并
+        //         // 注意: setState引起的更新是异步的, 正如下面的输出一样, 此时可以使用指定回调函数,
+        //         // 回调函数中的内容都会在更新后执行.
+        //         this.setState({ name: "Alice" }, () => {});
+        //         console.log(this.state.name); // "Tome"
+        //
+        //         // 函数式的写法
+        //         this.setState((state, props) => {
+        //              return { name: "Alice" };
+        //         });
+        //     }
+
+        //     render() {
+        //         // 读取状态
+        //         return (
+        //             <div onClick={this.changeName}>My name is {this.state.name}</div>
+        //         );
+        //     }
+        // }
+        // 简写形式如下
+        // class MyComponent extends React.Component {
+        //     constructor(props) {
+        //         super(props);
+        //     }
+
+        //     state = { name: "Tome" };
+
+        //     // 使用箭头函数可以保证this的指向为MyComponent的实例
+        //     changeName = () => {
+        //         this.setState({ name: "Alice" });
+        //     };
+
+        //     render() {
+        //         // 读取状态
+        //         return (
+        //             <div onClick={this.changeName}>My name is {this.state.name}</div>
+        //         );
+        //     }
+        // }
+        // ReactDOM.render(<MyComponent />, document.querySelector("#app"));
+
+        // Props属性
+        // class MyComponent extends React.Component {
+        //     render() {
+        //         console.log(this);
+        //         return (
+        //             <div>My name is {this.props.name}</div>
+        //         );
+        //     }
+        // }
+        // ReactDOM.render(<MyComponent name="zhangsan" />, document.querySelector("#app"));
+        // 批量传递Props属性
+        // class MyComponent extends React.Component {
+        //     render() {
+        //         return (
+        //             <div>
+        //                 <div>My name is {this.props.name}</div>
+        //                 <div>My age is {this.props.age}</div>
+        //                 <div>My gender is {this.props.name}</div>
+        //             </div>
+        //         );
+        //     }
+        // }
+        // const data = { "name": "zhangsan", "age": 18, "gender": "man" };
+        // ReactDOM.render(<MyComponent {...data} />, document.querySelector("#app"));
+        // Props的限制
+        // class MyComponent extends React.Component {
+        //     render() {
+        //         return (
+        //             <div>
+        //                 <div>My name is {this.props.name}</div>
+        //                 <div>My age is {this.props.age}</div>
+        //                 <div>My gender is {this.props.gender}</div>
+        //             </div>
+        //         );
+        //     }
+        // }
+        // MyComponent.propTypes = {
+        //     name: PropTypes.string.isRequired,
+        //     age: PropTypes.number,
+        //     gender: PropTypes.string,
+        //     greet: PropTypes.func
+        // };
+        // MyComponent.defaultProps = {
+        //     age: 18,
+        //     gender: "man"
+        // };
+        // // 类似Vue中的:value="18"
+        // ReactDOM.render(<MyComponent name="zhangsan" age={18} gender="woman" />, document.querySelector("#app"));
+        // Props简写属性
+        // class MyComponent extends React.Component {
+        //     render() {
+        //         return (
+        //             <div>
+        //                 <div>My name is {this.props.name}</div>
+        //                 <div>My age is {this.props.age}</div>
+        //                 <div>My gender is {this.props.gender}</div>
+        //             </div>
+        //         );
+        //     }
+
+        //     static propTypes = {
+        //         name: PropTypes.string.isRequired,
+        //         age: PropTypes.number,
+        //         gender: PropTypes.string,
+        //         greet: PropTypes.func
+        //     };
+
+        //     static defaultProps = {
+        //         age: 18,
+        //         gender: "man"
+        //     };
+        // }
+        // 也就是相当于 MyComponent.propTypes 和 MyComponent.defaultProps
+        // ReactDOM.render(<MyComponent name="zhangsan" age={18} gender="woman" />, document.querySelector("#app"));
+        
+        // 组件的构造器仅有两个作用
+        // 1.初始化state: this.state = { name: "Tome" };
+        // 2.事件绑定this: this.changeName = this.changeName.bind(this);
+        // 因此, 当需要在构造器中访问到props属性时, 才会去接受并传递给super.
+        
+        // class MyComponent extends React.Component {
+        //     foo = () => {
+        //         console.log("react");
+        //     }
+
+        //     render() {
+        //         // 字符串形式的ref: 类似于Vue中的ref
+        //         // 这个形式的ref使用过多会存在效率问题, 未来可能被移除
+        //         // return (
+        //         //     <div>
+        //         //         <input 
+        //         //             ref="input" 
+        //         //             type="text" 
+        //         //             placeholder="input your data"
+        //         //         />
+        //         //         <button onClick={this.display}>Click me</button>
+        //         //     </div>
+        //         // );
+        //         // display = () => {
+        //         //     console.log(this.refs.input);
+        //         // }
+
+        //         // 回调形式的ref: 回调函数的第一个参数就是该元素
+        //         // 在进行组件更新时, 内联函数回调会执行两次, 第1次传入null, 第2次传入元素
+        //         // return (
+        //         //     <div>
+        //         //         <input 
+        //         //             ref={e => this.inputElem = e}
+        //         //             type="text" 
+        //         //             placeholder="input your data"
+        //         //         />
+        //         //         <button onClick={this.display}>Click me</button>
+        //         //     </div>
+        //         // );
+        //         // 
+        //         // 非内联函数可以避免被调用两次, 但是这种影响可以几乎忽略不计
+        //         // return (
+        //         //     <div>
+        //         //         <input 
+        //         //             ref={this.foo}
+        //         //             type="text" 
+        //         //             placeholder="input your data"
+        //         //         />
+        //         //         <button onClick={this.display}>Click me</button>
+        //         //     </div>
+        //         // );
+
+        //         // createRef函数: 使用该函数创建一个节点容器, 当页面渲染时,
+        //         // 对应的节点会被放入该容器中, 专人专用
+        //         return (
+        //             <div>
+        //                 <input 
+        //                     ref={this.myRef}
+        //                     type="text" 
+        //                     placeholder="input your data"
+        //                 />
+        //                 <button onClick={this.display}>Click me</button>
+        //             </div>
+        //         );
+        //     }
+        //     myRef = React.createRef()
+        // }
+        // ReactDOM.render(<MyComponent />, document.querySelector("#app"));
+
+        // JSX的注释
+        // class MyComponent extends React.Component {
+        //     render() {
+        //         return (
+        //             {/* <div>a div tag</div>*/ }
+        //         );
+        //     }
+        // }
+
+        // 事件绑定
+        // class MyComponent extends React.Component {
+        //     display = (event) => {
+        //         // 阻止默认事件
+        //         event.preventDefault();
+        //         // 可以通过event.target获得当前对象
+        //         const target = event.target;
+        //         console.log(target);
+        //     };
+
+        //     // React中的事件与原生的事件进行了大写处理, React在其中做了很多兼容性
+        //     // 比如: onclick => onClick, onblur => onBlur
+
+        //     render() {
+        //         return (
+        //             <button onClick={this.display}>click me</button>
+        //         );
+        //     }
+        // }
+        // ReactDOM.render(<MyComponent />, document.querySelector("#app"));
+
+        // React中的双向数据绑定
+        // class MyComponent extends React.Component {
+
+        // state = {"username": "", "password": ""};    
+        
+        //     PostForm = (event) => {
+        //         event.preventDefault();
+        //         const { username, password } = this.state;
+        //         console.log(`username: ${username}, password: ${password}`);
+        //     };
+
+        //     UserChange = (event) => {
+        //         this.setState({ "username": event.target.value });
+        //     };
+
+        //     CodeChange = (event) => {
+        //         this.setState({ "password": event.target.value });
+        //     };
+
+        //     render() {
+        //         return (
+        //             <form onSubmit={this.PostForm}>
+        //                 <input onChange={this.UserChange} type="text"/>
+        //                 <input onChange={this.CodeChange} type="password"/>
+        //                 <button>click me</button>
+        //             </form>
+        //         );
+        //     }
+        // }
+        // ReactDOM.render(<MyComponent />, document.querySelector("#app"));
+
+        // 一个很重要的Trick
+        // 当输入的表单很多时, 为了避免大量的change函数, 我们可以使用如下解决方案
+        // class MyComponent extends React.Component {
+        //     PostForm = (event) => {
+        //         event.preventDefault();
+        //         const { username, password } = this.state;
+        //         console.log(`username: ${username}, password: ${password}`);
+        //     };
+
+        //     // 注意React会先调用this.FormChange(), 将其返回值给予onChange, 
+        //     // 因此, 我们返回一个函数达到我们的目标
+        //     FormChange = (key) => {
+        //         return (event) => {
+        //             // [key]: 动态解析key
+        //             this.setState({ [key]: event.target.value });
+        //         };
+        //     };
+
+        //     // FormChange = (key, event) => {
+        //     //     this.setState({[key]: event.target.value});
+        //     // };
+
+        //     render() {
+        //         return (
+        //             <form onSubmit={this.PostForm}>
+        //                 <input onChange={this.FormChange("username")} type="text"/>
+        //                 <input onChange={this.FormChange("password")} type="password"/>
+        //                 <button>click me</button>
+        //             </form>
+        //         );
+
+        //         // 还有一种写法
+        //         // return (
+        //         //     <form onSubmit={this.PostForm}>
+        //         //         <input onChange={(event) => { this.FormChange("username", event)}} type="text"/>
+        //         //         <input onChange={(event) => { this.FormChange("password", event)}} type="password"/>
+        //         //         <button>click me</button>
+        //         //     </form>
+        //         // );
+        //     }
+        // }
+        // ReactDOM.render(<MyComponent />, document.querySelector("#app"));
+
+        // React的生命周期函数
+        // class MyComponent extends React.Component {
+        //     constructor(props) {
+        //         super(props);
+        //         this.state = { "count": 0 };
+        //         console.log("constructor has been called");
+        //     }
+
+        //     // 组件挂载前(新版本需要加入"UNSAFE_"前缀)
+        //     componentWillMount() {
+        //         console.log("componentWillMount has been called");
+        //     }
+
+        //     render() {
+        //         console.log("render has been called");
+        //         return (
+        //             <div>
+        //                 <h1>Current Count: {this.state.count}</h1>
+        //                 <button onClick={this.addOne}>click to add one</button>
+        //                 <button onClick={this.remove}>click to remove me</button>
+        //                 <button onClick={this.force}>click to force update me</button>
+        //             </div>
+        //         );
+        //     }
+            
+        //     // 组件挂载后
+        //     componentDidMount() {
+        //         console.log("componentDidMount has been called");
+        //     }
+
+        //     // 组件卸载前
+        //     componentWillUnmount() {
+        //         console.log("componentWillUnmount has been called");
+        //     }
+
+        //     // 组件是否需要更新
+        //     // 返回true则更新组件, 否则不更新组件
+        //     shouldComponentUpdate(newProps, newState) {
+        //         console.log("shouldComponentUpdate has been called");
+        //         return Math.random() * 10 < 5 ? true : false;
+        //     }
+
+        //     // 组件即将更新(新版本需要加入"UNSAFE_"前缀)
+        //     componentWillUpdate() {
+        //         console.log("componentWillUpdate has been called");
+        //     }
+
+        //     // 组件更新完成
+        //     componentDidUpdate(preProps, preState) {
+        //         console.log("componentDidUpdate has been called");
+        //     }
+
+        //     // 组件强制更新
+        //     // 不需要经过shouldComponentUpdate生命周期, 强制更新组件
+        //     forceUpdate() {
+        //         console.log("forceUpdate has been called");
+        //     }
+
+        //     addOne = () => {
+        //         const { count } = this.state;
+        //         this.setState({ "count": count+1 });
+        //     };
+
+        //     remove = () => {
+        //         ReactDOM.unmountComponentAtNode(document.querySelector("#app"));
+        //     };
+
+        //     force = () => {
+        //         this.forceUpdate();
+        //     };
+        // }
+        // ReactDOM.render(<MyComponent />, document.querySelector("#app"));
+        // 还有一个父子组件的生命周期函数: componentWillRecieveProps(新版本需要加入"UNSAFE_"前缀)
+        // 当父组件状态改变时, 其子组件会被调用该生命周期函数.
+        // 所有生命周期函数中, componentDidMount(初始化页面, 发送网络请求等), componentWillUnmount(关闭定时器, 取消订阅等) 常用
+
+        class MyComponent extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = { count: 0 };
+            }
+
+            // getDerivedStateFromProps 几乎不会使用到
+            // 当state任何时候都取决于props时, 可以使用
+            // 
+            // 其参数是传入的props, 且会代替state中的值,
+            // 此时其他任何方法无法修改state, 引起页面的变换
+            static getDerivedStateFromProps(props, state) {
+                console.log(props, state)
+                console.log("getDerivedStateFromProps has been called");
+                // getDerivedStateFromProps 需要返回一个对象或者null
+                return null;
+            }
+
+            render() {
+                return (
+                    <div>
+                        <div>Count: {this.state.count}</div>
+                        <button onClick={this.add}>click me to add one</button>
+                    </div>
+                );
+            }
+
+            getSnapshotBeforeUpdate() {
+                console.log("getSnapshotBeforeUpdate has been called");
+                // return 的返回值将传递给 componentDidUpdate
+                // 可以传递一些页面参数, 比如页面滚动位置等
+                return "anything snapshot";
+            }
+
+            componentDidUpdate(preProps, preState, snapshot) {
+                console.log(preProps, preState, snapshot);
+                console.log("componentDidUpdate has been called");
+            }
+
+            add = () => {
+                const { count } = this.state;
+                this.setState({ count: count+1 });
+            };
+        }
+        ReactDOM.render(<MyComponent count="0" />, document.querySelector("#app"));
+
+        // 父组件状态更新引起子组件重新更新的问题
+        // 1. 重写shouldComponentUpdate手动写对比逻辑, 返回true或者false
+        // 2. 组件继承 React.PureComponent
+
+        // React中的插槽
+        // https://www.bilibili.com/video/BV1wy4y1D7JT?p=124
+
+        // 创建脚手架:
+        // - npx create-react-app <your app name>
+        // - cd <your app name>
+        // - npm start
+    </script>
+    <!-- JS Usage: 很明显, 在React中多元素嵌套使用JS不合适
+    <script type="text/javascript">
+        const vdom = React.createElement("h1", { "id": "foo" }, "Hello, React");
+        ReactDOM.render(vdom, document.querySelector("#app"));
+    </script>
+    -->
+</body>
+</html>

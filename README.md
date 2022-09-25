@@ -12,6 +12,7 @@
 03. JavaScript
 04. TypeScript
 05. Vue2.0/3.0
+06. React
 
 ### Origin
 01. These notes were written by the author through the video on the [website](https://www.bilibili.com/).
@@ -22,3 +23,4 @@
   - [ES6-ES11](https://www.bilibili.com/video/BV1uK411H7on/)
   - [Vue2.0/3.0](https://www.bilibili.com/video/BV1Zy4y1K7SH/)
   - [TypeScript](https://www.bilibili.com/video/BV1NR4y1x7Ab)
+  - [React](https://www.bilibili.com/video/BV1wy4y1D7JT/)
